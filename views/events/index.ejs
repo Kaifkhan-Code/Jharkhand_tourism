@@ -1,0 +1,58 @@
+<% layout('layouts/boilerplate') %>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Festivals &amp; Events</h2>
+      <span class="section-label">Seasonal &middot; recurring annually</span>
+    </div>
+
+    <form class="filter-bar" action="/events" method="GET">
+      <label>
+        Month
+        <select name="month">
+          <option value="">All months</option>
+          <% months.forEach(month => { %>
+            <option value="<%= month %>" <%= query.month === month ? 'selected' : '' %>><%= month %></option>
+          <% }) %>
+        </select>
+      </label>
+      <label>
+        District
+        <select name="district">
+          <option value="">All districts</option>
+          <% districts.forEach(district => { %>
+            <option value="<%= district %>" <%= query.district === district ? 'selected' : '' %>><%= district %></option>
+          <% }) %>
+        </select>
+      </label>
+      <button type="submit" class="btn btn-primary">Filter events</button>
+      <% if (query.month || query.district) { %>
+        <a href="/events" class="btn btn-outline">Clear</a>
+      <% } %>
+    </form>
+
+    <% if (events.length === 0) { %>
+      <div class="empty-state">
+        <h3>No events match those filters</h3>
+        <p>Try another month or district, or clear the filters to see every festival.</p>
+      </div>
+    <% } else { %>
+      <div class="place-grid">
+        <% events.forEach(event => { %>
+          <a href="/events/<%= event._id %>" class="place-card">
+            <img class="place-card-img" src="<%= event.image && event.image.url ? event.image.url : 'https://placehold.co/400x260/a63d2f/f7f2e8?text=' + encodeURIComponent(event.name) %>" alt="<%= event.name %>">
+            <div class="place-card-body">
+              <div class="place-card-district"><%= event.district %> &middot; <%= event.month %></div>
+              <h3><%= event.name %></h3>
+              <p><%= event.description.slice(0, 90) %><%= event.description.length > 90 ? '…' : '' %></p>
+              <% if (event.place) { %>
+                <div class="tag-row"><span class="tag">near <%= event.place.name %></span></div>
+              <% } %>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</section>

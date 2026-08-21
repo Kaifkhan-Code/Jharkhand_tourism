@@ -1,0 +1,132 @@
+<% layout('layouts/boilerplate') %>
+
+<% if (!place) { %>
+  <section class="section container">
+    <div class="empty-state">
+      <h3>Place not found</h3>
+      <p>It may have been removed. <a href="/places" style="text-decoration:underline;">Back to Explore</a></p>
+    </div>
+  </section>
+<% } else { %>
+  <img class="place-hero-img" src="<%= place.image && place.image.url ? place.image.url : 'https://placehold.co/1200x340/1e3b2c/f7f2e8?text=' + encodeURIComponent(place.name) %>" alt="<%= place.name %>">
+
+  <section class="section">
+    <div class="container">
+      <div class="section-label detail-meta"><%= place.district %> District &middot; <%= place.category.replace('-', ' ') %></div>
+      <h1 class="detail-title"><%= place.name %></h1>
+
+      <div class="place-detail-grid">
+        <div>
+          <p class="lead-copy detail-description"><%= place.description %></p>
+
+          <div class="tag-row detail-tags">
+            <% (place.tags || []).forEach(tag => { %>
+              <span class="tag"><%= tag %></span>
+            <% }) %>
+          </div>
+
+          <% if (currentUser) { %>
+            <% if (isInItinerary) { %>
+              <p class="saved-note">Saved in <a href="/itinerary">your itinerary</a>.</p>
+            <% } else { %>
+              <form action="/itinerary/places/<%= place._id %>" method="POST" class="detail-action">
+                <button type="submit" class="btn btn-primary">Add to itinerary</button>
+              </form>
+            <% } %>
+            <% if (isVisited) { %>
+              <form action="/places/<%= place._id %>/visit?_method=DELETE" method="POST">
+                <button type="submit" class="btn btn-outline">Unmark as visited</button>
+              </form>
+            <% } else { %>
+              <form action="/places/<%= place._id %>/visit" method="POST">
+                <button type="submit" class="btn btn-primary">Mark as visited</button>
+              </form>
+            <% } %>
+          <% } else { %>
+            <p><a href="/login" class="text-link">Log in</a> to track this place as visited.</p>
+          <% } %>
+        </div>
+
+        <aside>
+          <div class="fact-box">
+            <div class="fact-row"><span>Best season</span><span><%= place.bestSeason %></span></div>
+            <div class="fact-row"><span>District</span><span><%= place.district %></span></div>
+            <div class="fact-row"><span>Category</span><span><%= place.category.replace('-', ' ') %></span></div>
+            <% if (place.howToReach) { %>
+              <div class="fact-row fact-row-block">
+                <span>How to reach</span>
+                <p class="reach-copy"><%= place.howToReach %></p>
+              </div>
+            <% } %>
+          </div>
+        </aside>
+      </div>
+
+      <section class="reviews-section">
+        <div class="section-head">
+          <div>
+            <div class="section-label">Traveller notes</div>
+            <h2>Reviews <% if (reviews.length) { %><span class="review-summary"><%= averageRating.toFixed(1) %> / 5 · <%= reviews.length %></span><% } %></h2>
+          </div>
+        </div>
+
+        <% if (currentUser && !myReview) { %>
+          <form action="/places/<%= place._id %>/reviews" method="POST" enctype="multipart/form-data" class="review-form">
+            <% if (query && query.reviewError) { %><div class="form-error">Please choose a star rating and write a comment.</div><% } %>
+            <div class="form-group">
+              <label for="rating">Your rating</label>
+              <div class="star-input" role="radiogroup" aria-label="Rating from one to five stars">
+                <% [5, 4, 3, 2, 1].forEach(value => { %>
+                  <input id="rating-<%= value %>" type="radio" name="rating" value="<%= value %>" required>
+                  <label for="rating-<%= value %>" title="<%= value %> star<%= value !== 1 ? 's' : '' %>">&#9733;</label>
+                <% }) %>
+              </div>
+            </div>
+            <div class="form-group"><label for="comment">Your review</label><textarea id="comment" name="comment" rows="4" maxlength="1000" placeholder="What should another traveller know?" required></textarea></div>
+            <div class="form-group"><label for="photo">Photo of this place <span>(optional, JPG/PNG/WebP, max 5 MB)</span></label><input id="photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp"></div>
+            <button type="submit" class="btn btn-primary">Send review for approval</button>
+          </form>
+        <% } else if (currentUser && myReview) { %>
+          <p class="review-note"><%= myReview.status === 'pending' ? 'Your review is waiting for admin verification.' : myReview.status === 'approved' ? 'You have already reviewed this place.' : 'Your previous review was not approved.' %></p>
+        <% } else { %>
+          <p class="review-note"><a href="/login" class="text-link">Log in</a> to share your experience.</p>
+        <% } %>
+
+        <% if (reviews.length) { %>
+          <div class="review-list">
+            <% reviews.forEach(review => { %>
+              <article class="review-item">
+                <div class="review-item-top"><strong><%= review.user ? review.user.username : 'Traveller' %></strong><span class="stars" aria-label="<%= review.rating %> out of 5 stars"><%= '★'.repeat(review.rating) %><%= '☆'.repeat(5 - review.rating) %></span></div>
+                <p><%= review.comment %></p>
+                <% if (review.photo && review.photo.url) { %><img class="review-photo" src="<%= review.photo.url %>" alt="Photo shared by <%= review.user ? review.user.username : 'traveller' %> at <%= place.name %>"><% } %>
+              </article>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <div class="empty-state compact"><p>No approved reviews yet. Be the first traveller to share a note.</p></div>
+        <% } %>
+      </section>
+
+      <% if (place.location && place.location.lat && place.location.lng) { %>
+        <section class="map-section">
+          <div class="map-heading">
+            <div>
+              <div class="section-label">Live directions</div>
+              <h2>From you to <%= place.name %></h2>
+            </div>
+            <button type="button" id="locate-me" class="btn btn-primary">Show my location</button>
+          </div>
+          <div class="map-frame">
+            <div id="place-map" class="place-map" data-lat="<%= place.location.lat %>" data-lng="<%= place.location.lng %>" data-name="<%= place.name %>"></div>
+            <div class="map-legend" aria-live="polite">
+              <span><i class="legend-dot destination-dot"></i><%= place.name %></span>
+              <span><i class="legend-dot user-dot"></i>You</span>
+            </div>
+          </div>
+          <p id="location-status" class="map-status">Click “Show my location” to see the route from where you are.</p>
+          <a class="map-link" href="https://www.openstreetmap.org/?mlat=<%= place.location.lat %>&mlon=<%= place.location.lng %>#map=14/<%= place.location.lat %>/<%= place.location.lng %>" target="_blank" rel="noopener noreferrer">Open larger map</a>
+        </section>
+      <% } %>
+    </div>
+  </section>
+<% } %>

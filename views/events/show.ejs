@@ -1,0 +1,27 @@
+<% layout('layouts/boilerplate') %>
+
+<% if (!event) { %>
+  <section class="section container">
+    <div class="empty-state">
+      <h3>Event not found</h3>
+      <p><a href="/events" style="text-decoration:underline;">Back to Festivals</a></p>
+    </div>
+  </section>
+<% } else { %>
+  <img class="place-hero-img" src="<%= event.image && event.image.url ? event.image.url : 'https://placehold.co/1200x340/a63d2f/f7f2e8?text=' + encodeURIComponent(event.name) %>" alt="<%= event.name %>">
+
+  <section class="section">
+    <div class="container">
+      <div class="section-label" style="margin-bottom:0.5rem;"><%= event.district %> District &middot; <%= event.month %></div>
+      <h1 style="font-family: var(--font-display); font-size: 2.4rem; margin: 0 0 1.5rem;"><%= event.name %></h1>
+      <p style="font-size:1.05rem; color: var(--ink-soft); max-width: 65ch;"><%= event.description %></p>
+
+      <% if (event.place) { %>
+        <p style="margin-top: 1.5rem;">
+          Happens near <a href="/places/<%= event.place._id %>" style="text-decoration:underline; font-weight:700;"><%= event.place.name %></a>
+          — <a href="/places/<%= event.place._id %>" class="btn btn-outline" style="margin-top:0.75rem;">View that place</a>
+        </p>
+      <% } %>
+    </div>
+  </section>
+<% } %>

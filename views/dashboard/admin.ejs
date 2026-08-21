@@ -1,0 +1,97 @@
+<% layout('layouts/boilerplate') %>
+
+<section class="section">
+  <div class="container">
+    <div class="dashboard-heading">
+      <div>
+        <div class="section-label">Private control room</div>
+        <h1>Admin dashboard</h1>
+      </div>
+      <span class="admin-badge">Administrator</span>
+    </div>
+
+    <div class="dashboard-stats admin-stats">
+      <div class="dashboard-stat"><strong><%= stats.userCount %></strong><span>Registered users</span></div>
+      <div class="dashboard-stat"><strong><%= stats.placeCount %></strong><span>Places published</span></div>
+      <div class="dashboard-stat"><strong><%= stats.eventCount %></strong><span>Events published</span></div>
+      <div class="dashboard-stat"><strong><%= stats.visitCount %></strong><span>Total visits marked</span></div>
+    </div>
+
+    <div class="admin-controls">
+      <div>
+        <div class="section-label">Content control</div>
+        <h2>Manage what travellers see</h2>
+        <p>Use the existing public views to review places and festivals. New content is currently maintained in the seed files.</p>
+        <div class="control-actions">
+          <a href="/places" class="btn btn-primary">Review places</a>
+          <a href="/events" class="btn btn-outline">Review events</a>
+          <a href="/" class="btn btn-outline">View homepage</a>
+        </div>
+      </div>
+    </div>
+
+    <section class="admin-users">
+      <div class="section-head"><h2>Recent accounts</h2><span class="section-label">Private admin view</span></div>
+      <div class="user-table-wrap">
+        <table class="user-table">
+          <thead><tr><th>Username</th><th>Email</th><th>Role</th></tr></thead>
+          <tbody>
+            <% recentUsers.forEach(user => { %>
+              <tr><td><%= user.username %></td><td><%= user.email %></td><td><span class="role-pill <%= user.role === 'admin' ? 'role-admin' : '' %>"><%= user.role || 'customer' %></span></td></tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="admin-users admin-submissions">
+      <div class="section-head"><h2>Place suggestions</h2><span class="section-label"><%= pendingSubmissions.length %> waiting for review</span></div>
+      <% if (pendingSubmissions.length === 0) { %>
+        <div class="empty-state compact"><p>No new location suggestions to review.</p></div>
+      <% } else { %>
+        <div class="submission-list">
+          <% pendingSubmissions.forEach(submission => { %>
+            <article class="submission-item">
+              <div>
+                <div class="section-label"><%= submission.district %> &middot; <%= submission.category.replace('-', ' ') %></div>
+                <h3><%= submission.name %></h3>
+                <p><%= submission.description %></p>
+                <small>Suggested by <%= submission.submittedBy ? submission.submittedBy.username : 'traveller' %></small>
+                <% if (submission.howToReach) { %><p><strong>How to reach:</strong> <%= submission.howToReach %></p><% } %>
+                <% if (submission.locationUrl) { %><a class="text-link" href="<%= submission.locationUrl %>" target="_blank" rel="noreferrer">Open map link</a><% } %>
+              </div>
+              <div class="submission-actions">
+                <form action="/dashboard/admin/submissions/<%= submission._id %>/approve" method="POST"><button class="btn btn-primary" type="submit">Approve</button></form>
+                <form action="/dashboard/admin/submissions/<%= submission._id %>/reject" method="POST"><button class="btn btn-outline" type="submit">Reject</button></form>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+      <% } %>
+    </section>
+
+    <section class="admin-users admin-submissions">
+      <div class="section-head"><h2>Review moderation</h2><span class="section-label"><%= pendingReviews.length %> waiting for review</span></div>
+      <% if (pendingReviews.length === 0) { %>
+        <div class="empty-state compact"><p>No customer reviews to review.</p></div>
+      <% } else { %>
+        <div class="submission-list">
+          <% pendingReviews.forEach(review => { %>
+            <article class="submission-item">
+              <div>
+                <div class="section-label"><%= review.place ? review.place.name : 'Place removed' %> &middot; <%= review.rating %>/5 stars</div>
+                <h3><%= review.user ? review.user.username : 'Traveller' %></h3>
+                <p><%= review.comment %></p>
+                <% if (review.photo && review.photo.pendingPath) { %><p><strong>Photo attached for verification.</strong></p><img class="review-photo admin-review-photo" src="/dashboard/admin/reviews/<%= review._id %>/photo" alt="Pending photo for <%= review.place ? review.place.name : 'place' %>"><% } %>
+              </div>
+              <div class="submission-actions">
+                <form action="/dashboard/admin/reviews/<%= review._id %>/approve" method="POST"><button class="btn btn-primary" type="submit">Approve</button></form>
+                <form action="/dashboard/admin/reviews/<%= review._id %>/reject" method="POST"><button class="btn btn-outline" type="submit">Reject</button></form>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+      <% } %>
+    </section>
+  </div>
+</section>

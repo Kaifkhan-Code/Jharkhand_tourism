@@ -1,0 +1,31 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="form-page preference-page">
+  <div class="section-label">Shape your home page</div>
+  <h1>What kind of places do you like?</h1>
+  <p class="lead-copy">Pick one or more categories and we will bring matching places to your travel notebook.</p>
+
+  <% if (error) { %>
+    <div class="form-error"><%= error %></div>
+  <% } %>
+
+  <form action="/preferences" method="POST">
+    <div class="preference-options">
+      <% const categories = [
+        ['waterfall', 'Waterfalls'],
+        ['hill-station', 'Hill stations'],
+        ['wildlife', 'Wildlife'],
+        ['temple', 'Temples'],
+        ['tribal-heritage', 'Tribal heritage'],
+        ['dam-lake', 'Dams and lakes']
+      ]; %>
+      <% categories.forEach(([value, label]) => { %>
+        <label class="preference-option">
+          <input type="checkbox" name="likedCategories" value="<%= value %>" <%= selectedCategories.includes(value) ? 'checked' : '' %>>
+          <span><%= label %></span>
+        </label>
+      <% }) %>
+    </div>
+    <button type="submit" class="btn btn-primary">Save my interests</button>
+  </form>
+</div>

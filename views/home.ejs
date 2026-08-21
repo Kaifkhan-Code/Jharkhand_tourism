@@ -1,0 +1,88 @@
+<% layout('layouts/boilerplate') %>
+
+<section class="hero">
+  <div class="container hero-content">
+    <div class="hero-copy">
+      <div class="hero-eyebrow">Chotanagpur Plateau &middot; Eastern India</div>
+      <h1>Go where the green gets quiet.</h1>
+      <p>Waterfalls, sal forests, hill roads and living traditions. Find a slower side of Jharkhand, with places you can actually visit.</p>
+      <form class="hero-search" action="/places" method="GET">
+        <input type="text" name="district" placeholder="Search a district or place">
+        <button type="submit">Explore</button>
+      </form>
+    </div>
+    <div class="hero-note">
+      <span class="hero-note-mark">01</span>
+      <p>Field notes from Ranchi and beyond</p>
+      <span class="hero-note-line"></span>
+    </div>
+  </div>
+</section>
+
+<section class="section trending-section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Trending locations</h2>
+      <span class="section-label"><%= trendingPlaces.length ? 'Most visited by our travellers' : 'Places to start with' %></span>
+    </div>
+
+    <% if (trendingPlaces.length) { %>
+      <div class="place-grid">
+        <% trendingPlaces.forEach((entry, index) => { %>
+          <a href="/places/<%= entry.place._id %>" class="place-card trending-card">
+            <div class="trending-rank">0<%= index + 1 %></div>
+            <img class="place-card-img" src="<%= entry.place.image && entry.place.image.url ? entry.place.image.url : 'https://placehold.co/400x260/1e3b2c/f7f2e8?text=' + encodeURIComponent(entry.place.name) %>" alt="<%= entry.place.name %>">
+            <div class="place-card-body">
+              <div class="place-card-district"><%= entry.place.district %> District</div>
+              <h3><%= entry.place.name %></h3>
+              <p><%= entry.place.description.slice(0, 90) %><%= entry.place.description.length > 90 ? '…' : '' %></p>
+              <div class="tag-row">
+                <span class="tag"><%= entry.visits %> visit<%= entry.visits !== 1 ? 's' : '' %></span>
+                <span class="tag"><%= entry.place.category.replace('-', ' ') %></span>
+              </div>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="place-grid">
+        <% fallbackPlaces.forEach(place => { %>
+          <a href="/places/<%= place._id %>" class="place-card">
+            <img class="place-card-img" src="<%= place.image && place.image.url ? place.image.url : 'https://placehold.co/400x260/1e3b2c/f7f2e8?text=' + encodeURIComponent(place.name) %>" alt="<%= place.name %>">
+            <div class="place-card-body">
+              <div class="place-card-district"><%= place.district %> District</div>
+              <h3><%= place.name %></h3>
+              <p><%= place.description.slice(0, 90) %><%= place.description.length > 90 ? '…' : '' %></p>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Start exploring</h2>
+      <span class="section-label">01 &mdash; Choose your ground</span>
+    </div>
+    <div class="pill-row">
+      <a href="/places?category=waterfall" class="pill">Waterfalls</a>
+      <a href="/places?category=hill-station" class="pill">Hill Stations</a>
+      <a href="/places?category=wildlife" class="pill">Wildlife</a>
+      <a href="/places?category=temple" class="pill">Temples</a>
+      <a href="/places?category=tribal-heritage" class="pill">Tribal Heritage</a>
+      <a href="/places?category=dam-lake" class="pill">Dams &amp; Lakes</a>
+    </div>
+    <p class="lead-copy">
+      Every place on this site is one I know or have researched myself — no scraped listicles.
+      <% if (currentUser) { %>
+        Mark a spot as visited and your <a href="/places/discover" class="text-link">For You</a> page
+        stops suggesting it, and leans toward what you actually enjoy.
+      <% } else { %>
+        <a href="/signup" class="text-link">Create an account</a> to start tracking what you've visited.
+      <% } %>
+    </p>
+  </div>
+</section>

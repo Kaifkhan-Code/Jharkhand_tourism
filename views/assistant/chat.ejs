@@ -1,0 +1,45 @@
+<% layout('layouts/boilerplate') %>
+
+<section class="section guide-page">
+  <div class="container guide-container">
+    <div class="guide-intro">
+      <div class="section-label">Local recommendations</div>
+      <h1>Ask a guide who knows the road.</h1>
+      <p>Tell us what kind of day you want. The guide searches the places listed on Jharkhand Trails, so every suggestion has somewhere real behind it.</p>
+    </div>
+
+    <div class="guide-panel">
+      <div class="guide-panel-top">
+        <span class="guide-status"><span></span> Ready to help</span>
+        <span class="guide-count">Jharkhand, India</span>
+      </div>
+
+      <% if (answer) { %>
+        <div class="guide-message guide-message-user">
+          <span class="guide-message-label">You asked</span>
+          <p><%= question %></p>
+        </div>
+        <div class="guide-message guide-message-answer">
+          <span class="guide-message-label">Your guide</span>
+          <p><%= answer %></p>
+        </div>
+      <% } else { %>
+        <div class="guide-empty">
+          <div class="guide-mark" aria-hidden="true">JT</div>
+          <h2>What are you in the mood for?</h2>
+          <p>Try a place, a season, or just a feeling. For example: “a quiet waterfall near Ranchi for a Sunday morning.”</p>
+        </div>
+      <% } %>
+
+      <% if (error) { %>
+        <div class="form-error"><%= error %></div>
+      <% } %>
+
+      <form class="guide-form" action="/assistant" method="POST">
+        <label class="sr-only" for="guide-question">Your question</label>
+        <input id="guide-question" type="text" name="question" placeholder="Ask about a place, route, or kind of day..." value="<%= question || '' %>" required>
+        <button type="submit" class="btn btn-primary">Ask the guide <span aria-hidden="true">&#8594;</span></button>
+      </form>
+    </div>
+  </div>
+</section>

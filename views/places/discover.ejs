@@ -1,0 +1,40 @@
+<% layout('layouts/boilerplate') %>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>For You</h2>
+      <span class="section-label">Ranked by what you've liked so far</span>
+    </div>
+
+    <% if (!hasVisitedAny) { %>
+      <div class="empty-state">
+        <h3>Nothing to go on yet</h3>
+        <p>Mark a few places as visited from the <a href="/places" style="text-decoration:underline;">Explore</a> page,
+          and this page will start leaning toward places like them.</p>
+      </div>
+    <% } else if (places.length === 0) { %>
+      <div class="empty-state">
+        <h3>You've seen it all</h3>
+        <p>Every place on the site is already marked visited. Nicely done.</p>
+      </div>
+    <% } else { %>
+      <div class="place-grid">
+        <% places.forEach(place => { %>
+          <a href="/places/<%= place._id %>" class="place-card">
+            <img class="place-card-img" src="<%= place.image && place.image.url ? place.image.url : 'https://placehold.co/400x260/1e3b2c/f7f2e8?text=' + encodeURIComponent(place.name) %>" alt="<%= place.name %>">
+            <div class="place-card-body">
+              <div class="place-card-district"><%= place.district %> District</div>
+              <h3><%= place.name %></h3>
+              <p><%= place.description.slice(0, 90) %><%= place.description.length > 90 ? '…' : '' %></p>
+              <div class="tag-row">
+                <span class="tag"><%= place.category.replace('-', ' ') %></span>
+                <span class="tag"><%= place.bestSeason %></span>
+              </div>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</section>

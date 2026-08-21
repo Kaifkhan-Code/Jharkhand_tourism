@@ -1,0 +1,108 @@
+<% layout('layouts/boilerplate') %>
+
+<section class="section">
+  <div class="container">
+    <div class="dashboard-heading">
+      <div>
+        <div class="section-label">Your travel notebook</div>
+        <h1>Welcome back, <%= currentUser.username %>.</h1>
+      </div>
+      <a href="/places" class="btn btn-primary">Explore places</a>
+    </div>
+
+    <div class="dashboard-stats">
+      <div class="dashboard-stat"><strong><%= visited.length %></strong><span>Places visited</span></div>
+      <div class="dashboard-stat"><strong><%= itinerary.length %></strong><span>Saved for later</span></div>
+      <div class="dashboard-stat"><strong>Traveller</strong><span>Account</span></div>
+    </div>
+
+    <section class="trending-section dashboard-trending">
+      <div class="section-head">
+        <h2>Trending locations</h2>
+        <span class="section-label"><%= trendingPlaces.length ? 'Popular with travellers' : 'Places to start with' %></span>
+      </div>
+      <div class="place-grid">
+        <% if (trendingPlaces.length) { %>
+          <% trendingPlaces.forEach((entry, index) => { %>
+            <a href="/places/<%= entry.place._id %>" class="place-card trending-card">
+              <div class="trending-rank">0<%= index + 1 %></div>
+              <img class="place-card-img" src="<%= entry.place.image && entry.place.image.url ? entry.place.image.url : 'https://placehold.co/400x260/1e3b2c/f7f2e8?text=' + encodeURIComponent(entry.place.name) %>" alt="<%= entry.place.name %>">
+              <div class="place-card-body">
+                <div class="place-card-district"><%= entry.place.district %> District</div>
+                <h3><%= entry.place.name %></h3>
+                <div class="tag-row"><span class="tag"><%= entry.visits %> visit<%= entry.visits !== 1 ? 's' : '' %></span></div>
+              </div>
+            </a>
+          <% }) %>
+        <% } else { %>
+          <% fallbackTrendingPlaces.forEach(place => { %>
+            <a href="/places/<%= place._id %>" class="place-card trending-card">
+              <img class="place-card-img" src="<%= place.image && place.image.url ? place.image.url : 'https://placehold.co/400x260/1e3b2c/f7f2e8?text=' + encodeURIComponent(place.name) %>" alt="<%= place.name %>">
+              <div class="place-card-body">
+                <div class="place-card-district"><%= place.district %> District</div>
+                <h3><%= place.name %></h3>
+              </div>
+            </a>
+          <% }) %>
+        <% } %>
+      </div>
+    </section>
+
+    <section class="dashboard-preferences">
+      <div class="section-head">
+        <h2>Your interests</h2>
+        <a href="/preferences" class="section-label">Change preferences</a>
+      </div>
+      <div class="pill-row">
+        <% likedCategories.forEach(category => { %>
+          <a href="/places?category=<%= category %>" class="pill active"><%= category.replace('-', ' ') %></a>
+        <% }) %>
+      </div>
+      <% if (preferredPlaces.length > 0) { %>
+        <div class="place-grid preference-place-grid">
+          <% preferredPlaces.forEach(place => { %>
+            <a href="/places/<%= place._id %>" class="place-card">
+              <img class="place-card-img" src="<%= place.image && place.image.url ? place.image.url : 'https://placehold.co/400x260/1e3b2c/f7f2e8?text=' + encodeURIComponent(place.name) %>" alt="<%= place.name %>">
+              <div class="place-card-body">
+                <div class="place-card-district"><%= place.district %> District</div>
+                <h3><%= place.name %></h3>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+      <% } %>
+    </section>
+
+    <div class="dashboard-columns">
+      <section>
+        <div class="section-head"><h2>Saved itinerary</h2><a href="/itinerary" class="section-label">Open full list</a></div>
+        <% if (itinerary.length === 0) { %>
+          <div class="empty-state compact"><p>Your next route starts with one place.</p><a href="/places" class="btn btn-outline">Find somewhere</a></div>
+        <% } else { %>
+          <div class="dashboard-list">
+            <% itinerary.slice(0, 4).forEach(entry => { if (entry.place) { %>
+              <a class="dashboard-list-item" href="/places/<%= entry.place._id %>">
+                <span><%= entry.place.name %></span><small><%= entry.place.district %> District</small>
+              </a>
+            <% } }) %>
+          </div>
+        <% } %>
+      </section>
+
+      <section>
+        <div class="section-head"><h2>Recently visited</h2><a href="/places/discover" class="section-label">For You</a></div>
+        <% if (visited.length === 0) { %>
+          <div class="empty-state compact"><p>Mark places as visited to shape your recommendations.</p></div>
+        <% } else { %>
+          <div class="dashboard-list">
+            <% visited.slice(0, 4).forEach(entry => { if (entry.place) { %>
+              <a class="dashboard-list-item" href="/places/<%= entry.place._id %>">
+                <span><%= entry.place.name %></span><small><%= entry.place.category.replace('-', ' ') %></small>
+              </a>
+            <% } }) %>
+          </div>
+        <% } %>
+      </section>
+    </div>
+  </div>
+</section>

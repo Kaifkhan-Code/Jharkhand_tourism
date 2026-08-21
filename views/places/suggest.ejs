@@ -1,0 +1,43 @@
+<% layout('layouts/boilerplate') %>
+
+<section class="section">
+  <div class="container suggest-layout">
+    <div class="suggest-intro">
+      <div class="section-label">Know a place we missed?</div>
+      <h1>Suggest a Jharkhand location</h1>
+      <p class="lead-copy">Tell us about it. Your suggestion will stay private until it has been checked and approved.</p>
+      <% if (typeof query !== 'undefined' && query.submitted) { %>
+        <div class="form-success">Thanks. Your suggestion is waiting for verification.</div>
+      <% } %>
+      <% if (submissions.length > 0) { %>
+        <div class="suggestion-history">
+          <div class="section-label">Your suggestions</div>
+          <% submissions.forEach(submission => { %>
+            <div class="suggestion-history-item">
+              <strong><%= submission.name %></strong>
+              <span class="status-pill status-<%= submission.status %>"><%= submission.status %></span>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+
+    <form action="/places/suggest" method="POST" class="suggestion-form">
+      <% if (error) { %><div class="form-error"><%= error %></div><% } %>
+      <div class="form-group"><label for="name">Location name</label><input id="name" name="name" value="<%= formData.name || '' %>" required></div>
+      <div class="form-group"><label for="district">District</label><input id="district" name="district" value="<%= formData.district || '' %>" required></div>
+      <div class="form-group"><label for="category">Category</label>
+        <select id="category" name="category" required>
+          <option value="">Choose a category</option>
+          <% [['waterfall','Waterfall'],['hill-station','Hill station'],['wildlife','Wildlife'],['temple','Temple'],['tribal-heritage','Tribal heritage'],['dam-lake','Dam or lake']].forEach(([value, label]) => { %>
+            <option value="<%= value %>" <%= formData.category === value ? 'selected' : '' %>><%= label %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="form-group"><label for="description">Why should travellers visit?</label><textarea id="description" name="description" rows="5" required><%= formData.description || '' %></textarea></div>
+      <div class="form-group"><label for="howToReach">How to reach <span>(optional)</span></label><textarea id="howToReach" name="howToReach" rows="3"><%= formData.howToReach || '' %></textarea></div>
+      <div class="form-group"><label for="locationUrl">Map link <span>(optional)</span></label><input id="locationUrl" name="locationUrl" type="url" value="<%= formData.locationUrl || '' %>" placeholder="https://maps.google.com/"></div>
+      <button type="submit" class="btn btn-primary">Send for verification</button>
+    </form>
+  </div>
+</section>
