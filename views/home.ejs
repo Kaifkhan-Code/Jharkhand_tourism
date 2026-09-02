@@ -441,6 +441,7 @@
     });
 
     districtScroller.addEventListener('wheel', (event) => {
+      if (window.matchMedia('(max-width: 720px)').matches) return;
       const scrollerWidth = districtScroller.scrollWidth - districtScroller.clientWidth;
       if (scrollerWidth <= 0) return;
 
