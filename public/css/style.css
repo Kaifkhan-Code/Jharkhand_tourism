@@ -1815,6 +1815,33 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   .container { padding-left: 1rem; padding-right: 1rem; }
 
   .navbar { padding: 0.55rem 0; }
+  .nav-search {
+    width: min(100%, 320px);
+    flex: 0 1 320px;
+    height: 2.1rem;
+    border-radius: 6px;
+  }
+  .nav-search input {
+    min-width: 0;
+    padding: 0.4rem 0.65rem;
+    font-size: 0.78rem;
+  }
+  .nav-search button {
+    width: 2.1rem;
+    height: 2.1rem;
+    flex-basis: 2.1rem;
+  }
+  .nav-search button::before {
+    width: 0.62rem;
+    height: 0.62rem;
+    left: 0.62rem;
+    top: 0.57rem;
+  }
+  .nav-search button::after {
+    width: 0.42rem;
+    left: 1.18rem;
+    top: 1.25rem;
+  }
   .preference-options { grid-template-columns: 1fr; }
   .suggest-layout { grid-template-columns: 1fr; gap: 2rem; }
   .suggest-intro h1 { max-width: none; }
