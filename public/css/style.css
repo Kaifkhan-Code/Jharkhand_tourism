@@ -1814,32 +1814,33 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
 @media (max-width: 720px) {
   .container { padding-left: 1rem; padding-right: 1rem; }
 
-  .navbar { padding: 0.7rem 0; }
+  .navbar { padding: 0.55rem 0; }
   .preference-options { grid-template-columns: 1fr; }
   .suggest-layout { grid-template-columns: 1fr; gap: 2rem; }
   .suggest-intro h1 { max-width: none; }
   .suggestion-form { padding: 1.25rem; }
   .submission-item { flex-direction: column; gap: 1rem; }
   .submission-actions { flex-direction: row; }
-  .hero { min-height: 650px; background-position: 62% center; }
-  .hero h1 { max-width: 9ch; font-size: clamp(3rem, 14vw, 4.2rem); }
-  .hero p { font-size: 1rem; }
+  .hero { min-height: 560px; padding: 4rem 0 3.5rem; background-position: 62% center; }
+  .hero h1 { max-width: 10ch; font-size: 2.65rem; line-height: 1.05; margin-bottom: 1rem; }
+  .hero p { font-size: 0.94rem; line-height: 1.55; margin-bottom: 1.5rem; }
   .hero-search { flex-direction: column; border: 0; background: transparent; box-shadow: none; gap: 0.55rem; }
   .hero-search input { min-height: 48px; border-radius: 4px; }
   .hero-search button { min-height: 48px; border-radius: 4px; }
   .hero-content { grid-template-columns: 1fr; gap: 0; }
-  .hero-note { margin-top: 3.5rem; margin-bottom: 0; }
-  .section { padding: 2.75rem 0; }
-  .section-head h2 { font-size: 1.85rem; }
+  .hero-note { margin-top: 2.25rem; margin-bottom: 0; }
+  .section { padding: 2.25rem 0; }
+  .section-head { margin-bottom: 1.15rem; padding-bottom: 0.7rem; }
+  .section-head h2 { font-size: 1.6rem; line-height: 1.15; }
   .guide-container { grid-template-columns: 1fr; gap: 1.5rem; padding-top: 2rem; }
   .guide-intro { padding-top: 0; }
-  .guide-intro h1 { max-width: 10ch; font-size: 3.2rem; }
+  .guide-intro h1 { max-width: 10ch; font-size: 2.65rem; }
   .guide-intro p { margin-bottom: 0; }
   .guide-panel { box-shadow: 0 5px 16px rgba(32, 37, 34, 0.07); }
   .guide-form { flex-direction: column; }
   .guide-form .btn { width: 100%; }
   .place-detail-grid { grid-template-columns: 1fr; }
-  .navbar .container { flex-direction: column; gap: 0.9rem; }
+  .navbar .container { flex-direction: column; gap: 0.55rem; }
   .nav-links { flex-wrap: wrap; justify-content: center; }
   .section-head { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
   .map-heading { align-items: flex-start; flex-direction: column; }
@@ -1852,7 +1853,7 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   .dashboard-heading { align-items: flex-start; flex-direction: column; }
   .dashboard-stats, .admin-stats { grid-template-columns: 1fr 1fr; }
   .dashboard-columns { grid-template-columns: 1fr; gap: 2rem; }
-  .form-page { margin: 2rem 1rem; padding: 1.5rem; }
+  .form-page { margin: 1.25rem 0.5rem; padding: 1.15rem; }
   .navbar .container { padding-left: 1rem; padding-right: 1rem; }
   .nav-links { gap: 0.85rem 1rem; font-size: 0.8rem; }
 
@@ -1877,12 +1878,12 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   .rajmahal-cover-card .special-area-image,
   .mccluskieganj-cover-card .special-area-image,
   .rajrappa-cover-card .special-area-image {
-    height: 180px;
+    height: 160px;
     object-position: center top;
   }
   .mccluskieganj-cover-card .special-area-image,
   .mccluskieganj-cover-image {
-    height: 220px;
+    height: 190px;
     object-position: center 28%;
   }
   .jamshedpur-cover-card .special-area-image,
@@ -1895,6 +1896,9 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   }
 
   .place-grid { grid-template-columns: 1fr; }
+  .place-card-body { padding: 0.9rem 1rem 1rem; }
+  .place-card-body h3 { font-size: 1.2rem; }
+  .place-card-body p { font-size: 0.86rem; }
   .itinerary-item { grid-template-columns: 32px minmax(0, 1fr) auto; }
   .itinerary-img { width: 100%; }
   .review-item-top { align-items: flex-start; flex-direction: column; gap: 0.35rem; }
@@ -1914,9 +1918,9 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
 }
 
 @media (max-width: 420px) {
-  .hero { min-height: 680px; padding: 4.5rem 0 5rem; }
-  .hero h1 { font-size: clamp(2.7rem, 14vw, 3.6rem); }
-  .hero-search button { padding: 0 1rem; }
+  .hero { min-height: 540px; padding: 3.5rem 0 3rem; }
+  .hero h1 { font-size: 2.35rem; }
+  .hero-search button { padding: 0 1rem; min-height: 46px; }
   .district-card { flex-basis: calc(100vw - 2rem); width: calc(100vw - 2rem); }
   .district-card-header { align-items: flex-start; flex-direction: column; }
   .district-card-actions { width: 100%; justify-content: flex-end; }
@@ -1926,7 +1930,7 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   .place-detail-hero { padding: 1.5rem 0; }
   .place-detail-hero-grid { gap: 1.5rem; }
   .place-hero-img { width: 100%; max-width: 420px; }
-  .detail-title { margin-bottom: 1rem; font-size: clamp(2.2rem, 12vw, 3.2rem); }
+  .detail-title { margin-bottom: 1rem; font-size: 2.15rem; }
   .place-card-body { padding: 0.9rem; }
   .dashboard-stats,
   .admin-stats { grid-template-columns: 1fr; }
