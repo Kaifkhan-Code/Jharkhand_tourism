@@ -30,11 +30,6 @@ module.exports.login = (req, res) => {
 
   const safeRedirectTo = redirectTo === "/dashboard" || redirectTo === "/dashboard/admin" ? "/" : redirectTo;
 
-  if (req.user.role === "customer" && !(req.user.likedCategories || []).length) {
-    req.session.preferenceRedirectTo = safeRedirectTo;
-    return res.redirect("/preferences");
-  }
-
   res.redirect(safeRedirectTo);
 };
 
