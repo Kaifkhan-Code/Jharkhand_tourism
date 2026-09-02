@@ -67,6 +67,14 @@ img { max-width: 100%; display: block; }
   gap: 1rem;
 }
 
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.nav-toggle { display: none; }
+
 .nav-search {
   display: flex;
   align-items: center;
@@ -1821,6 +1829,32 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
     align-items: center;
     gap: 0.55rem 0.8rem;
   }
+  .nav-toggle {
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: white;
+    color: var(--sal-green);
+    cursor: pointer;
+  }
+  .nav-toggle span { width: 0.9rem; height: 2px; background: currentColor; }
+  .nav-menu {
+    display: none;
+    grid-column: 1 / -1;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    padding-top: 0.35rem;
+  }
+  .nav-menu.is-open { display: flex; }
   .nav-search {
     width: 140px;
     flex: 0 0 140px;
@@ -1874,7 +1908,7 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   .guide-form { flex-direction: column; }
   .guide-form .btn { width: 100%; }
   .place-detail-grid { grid-template-columns: 1fr; }
-  .nav-links { grid-column: 1 / -1; width: 100%; flex-wrap: wrap; justify-content: center; }
+  .nav-links { width: 100%; flex-wrap: wrap; justify-content: center; }
   .section-head { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
   .map-heading { align-items: flex-start; flex-direction: column; }
   .place-map { height: 320px; }
@@ -1900,7 +1934,7 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
     padding: 0.15rem 0 0.65rem;
     overflow-x: auto;
     overflow-y: hidden;
-    touch-action: auto;
+    touch-action: pan-x pan-y;
   }
   .district-card,
   .special-area-card {

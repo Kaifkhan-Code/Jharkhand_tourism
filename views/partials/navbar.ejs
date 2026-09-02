@@ -2,30 +2,47 @@
   <div class="container">
     <a href="/" class="brand">Jharkhand<span>.</span>Trails</a>
 
-    <form action="/places" method="GET" class="nav-search" role="search">
-      <input type="text" name="search" placeholder="Search places or districts" aria-label="Search places or districts">
-      <button type="submit" aria-label="Search">Search</button>
-    </form>
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav-menu" aria-label="Open navigation menu">
+      <span></span><span></span><span></span>
+    </button>
 
-    <div class="nav-links">
-      <a href="/places">Explore</a>
-      <a href="/assistant">Ask a Guide</a>
-      <% if (currentUser) { %>
-        <a href="/places/discover">For You</a>
-        <a href="/itinerary">My itinerary</a>
-        <% if (currentUser.role === 'admin') { %>
-          <a href="/dashboard/admin">Admin</a>
+    <div class="nav-menu" id="mobile-nav-menu">
+      <form action="/places" method="GET" class="nav-search" role="search">
+        <input type="text" name="search" placeholder="Search places or districts" aria-label="Search places or districts">
+        <button type="submit" aria-label="Search">Search</button>
+      </form>
+
+      <div class="nav-links">
+        <a href="/places">Explore</a>
+        <a href="/assistant">Ask a Guide</a>
+        <% if (currentUser) { %>
+          <a href="/places/discover">For You</a>
+          <a href="/itinerary">My itinerary</a>
+          <% if (currentUser.role === 'admin') { %>
+            <a href="/dashboard/admin">Admin</a>
+          <% } else { %>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/places/suggest">Suggest a place</a>
+          <% } %>
+          <form action="/logout" method="POST" class="nav-form">
+            <button type="submit" class="nav-btn">Log out</button>
+          </form>
         <% } else { %>
-          <a href="/dashboard">Dashboard</a>
-          <a href="/places/suggest">Suggest a place</a>
+          <a href="/login">Log in</a>
+          <a href="/signup" class="nav-btn">Sign up</a>
         <% } %>
-        <form action="/logout" method="POST" class="nav-form">
-          <button type="submit" class="nav-btn">Log out</button>
-        </form>
-      <% } else { %>
-        <a href="/login">Log in</a>
-        <a href="/signup" class="nav-btn">Sign up</a>
-      <% } %>
+      </div>
     </div>
   </div>
 </nav>
+
+<script>
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('#mobile-nav-menu');
+
+  navToggle?.addEventListener('click', () => {
+    const isOpen = navMenu?.classList.toggle('is-open');
+    navToggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
+    navToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+  });
+</script>
