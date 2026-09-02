@@ -98,14 +98,40 @@ img { max-width: 100%; display: block; }
 }
 
 .nav-search button {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: 0 0 2.5rem;
   border: none;
   background: transparent;
   color: var(--sal-green);
-  padding: 0 0.9rem 0 0.4rem;
+  padding: 0;
   font: inherit;
   font-weight: 700;
   cursor: pointer;
-  letter-spacing: 0.02em;
+  font-size: 0;
+  position: relative;
+}
+
+.nav-search button::before {
+  content: '';
+  position: absolute;
+  width: 0.72rem;
+  height: 0.72rem;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  left: 0.76rem;
+  top: 0.7rem;
+}
+
+.nav-search button::after {
+  content: '';
+  position: absolute;
+  width: 0.5rem;
+  height: 2px;
+  background: currentColor;
+  transform: rotate(45deg);
+  left: 1.42rem;
+  top: 1.52rem;
 }
 
 .brand {
