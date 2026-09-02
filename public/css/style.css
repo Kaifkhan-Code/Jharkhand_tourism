@@ -1822,10 +1822,10 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
     gap: 0.55rem 0.8rem;
   }
   .nav-search {
-    width: 150px;
-    flex: 0 0 150px;
-    height: 1.5rem;
-    border-radius: 4px;
+    width: 140px;
+    flex: 0 0 140px;
+    height: 1.4rem;
+    border-radius: 3px;
     justify-self: end;
   }
   .nav-search input {
@@ -1834,20 +1834,20 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
     font-size: 0.78rem;
   }
   .nav-search button {
-    width: 1.5rem;
-    height: 1.5rem;
-    flex-basis: 1.5rem;
+    width: 1.4rem;
+    height: 1.4rem;
+    flex-basis: 1.4rem;
   }
   .nav-search button::before {
     width: 0.55rem;
     height: 0.55rem;
-    left: 0.4rem;
-    top: 0.36rem;
+    left: 0.36rem;
+    top: 0.32rem;
   }
   .nav-search button::after {
     width: 0.38rem;
-    left: 0.8rem;
-    top: 0.88rem;
+    left: 0.72rem;
+    top: 0.82rem;
   }
   .preference-options { grid-template-columns: 1fr; }
   .suggest-layout { grid-template-columns: 1fr; gap: 2rem; }
@@ -1894,19 +1894,20 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   .district-nav { display: none; }
   .district-explorer,
   .special-area-rail {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    display: flex;
+    gap: 0.8rem;
     margin: 0;
-    padding: 0;
-    overflow: visible;
+    padding: 0.15rem 0 0.65rem;
+    overflow-x: auto;
+    overflow-y: hidden;
     touch-action: auto;
   }
   .district-card,
   .special-area-card {
-    width: 100%;
-    min-width: 0;
-    max-width: none;
+    flex: 0 0 min(280px, calc(100vw - 3rem));
+    width: min(280px, calc(100vw - 3rem));
+    min-width: min(280px, calc(100vw - 3rem));
+    max-width: 280px;
     min-height: 0;
   }
   .district-card-header { padding: 0.6rem 0.7rem; }
@@ -1976,7 +1977,11 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   .hero { min-height: 540px; padding: 3.5rem 0 3rem; }
   .hero h1 { font-size: 2.35rem; }
   .hero-search button { padding: 0 1rem; min-height: 46px; }
-  .district-card { width: 100%; }
+  .district-card {
+    flex-basis: min(280px, calc(100vw - 3rem));
+    width: min(280px, calc(100vw - 3rem));
+    min-width: min(280px, calc(100vw - 3rem));
+  }
   .district-card-header { align-items: flex-start; flex-direction: column; }
   .district-card-actions { width: 100%; justify-content: flex-end; }
   .district-card-summary { width: 100%; }
