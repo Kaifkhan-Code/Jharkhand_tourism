@@ -1815,11 +1815,18 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   .container { padding-left: 1rem; padding-right: 1rem; }
 
   .navbar { padding: 0.55rem 0; }
+  .navbar .container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.55rem 0.8rem;
+  }
   .nav-search {
-    width: min(100%, 180px);
-    flex: 0 1 180px;
-    height: 1.6rem;
+    width: 150px;
+    flex: 0 0 150px;
+    height: 1.5rem;
     border-radius: 4px;
+    justify-self: end;
   }
   .nav-search input {
     min-width: 0;
@@ -1827,20 +1834,20 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
     font-size: 0.78rem;
   }
   .nav-search button {
-    width: 1.6rem;
-    height: 1.6rem;
-    flex-basis: 1.6rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-basis: 1.5rem;
   }
   .nav-search button::before {
     width: 0.55rem;
     height: 0.55rem;
-    left: 0.44rem;
-    top: 0.4rem;
+    left: 0.4rem;
+    top: 0.36rem;
   }
   .nav-search button::after {
     width: 0.38rem;
-    left: 0.86rem;
-    top: 0.94rem;
+    left: 0.8rem;
+    top: 0.88rem;
   }
   .preference-options { grid-template-columns: 1fr; }
   .suggest-layout { grid-template-columns: 1fr; gap: 2rem; }
@@ -1867,8 +1874,7 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   .guide-form { flex-direction: column; }
   .guide-form .btn { width: 100%; }
   .place-detail-grid { grid-template-columns: 1fr; }
-  .navbar .container { flex-direction: column; gap: 0.55rem; }
-  .nav-links { flex-wrap: wrap; justify-content: center; }
+  .nav-links { grid-column: 1 / -1; width: 100%; flex-wrap: wrap; justify-content: center; }
   .section-head { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
   .map-heading { align-items: flex-start; flex-direction: column; }
   .place-map { height: 320px; }
@@ -1909,7 +1915,7 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   .district-card-copy h3 { font-size: 1.1rem; }
   .district-card-body { padding: 0.65rem 0.7rem 0.75rem; }
   .district-card-body p { font-size: 0.78rem; -webkit-line-clamp: 2; }
-  .district-area-tags { max-height: 104px; overflow-y: auto; padding-right: 0.15rem; }
+  .district-area-tags { max-height: none; overflow: visible; padding-right: 0; }
   .district-area-tag { padding: 0.3rem 0.48rem; font-size: 0.68rem; }
   .special-area-image,
   .patratu-cover-card .special-area-image,
