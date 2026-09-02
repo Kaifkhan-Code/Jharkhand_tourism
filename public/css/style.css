@@ -1924,8 +1924,8 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   .navbar .container { padding-left: 1rem; padding-right: 1rem; }
   .nav-links { gap: 0.85rem 1rem; font-size: 0.8rem; }
 
-  .district-carousel { grid-template-columns: 1fr; }
-  .district-nav { display: none; }
+  .district-carousel { grid-template-columns: auto minmax(0, 1fr) auto; gap: 0.45rem; }
+  .district-nav { display: inline-flex; width: 2.2rem; height: 2.2rem; font-size: 1rem; }
   .district-explorer,
   .special-area-rail {
     display: flex;
@@ -1936,7 +1936,7 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
     overflow-y: hidden;
   }
   .district-explorer {
-    touch-action: pan-y;
+    touch-action: pan-y !important;
     cursor: grab;
   }
   .district-card,

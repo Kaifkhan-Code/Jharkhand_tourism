@@ -426,11 +426,6 @@
   const districtNext = document.querySelector('.district-nav-next');
 
   if (districtScroller) {
-    let dragStartX = 0;
-    let dragStartY = 0;
-    let dragStartScrollLeft = 0;
-    let districtWasDragged = false;
-
     const scrollByCard = () => {
       const firstCard = districtScroller.querySelector('.district-card');
       if (!firstCard) return 250;
@@ -454,40 +449,6 @@
       event.stopPropagation();
       districtScroller.scrollLeft += event.deltaY;
     }, { passive: false });
-
-    districtScroller.addEventListener('pointerdown', (event) => {
-      if (event.pointerType === 'mouse') return;
-      dragStartX = event.clientX;
-      dragStartY = event.clientY;
-      dragStartScrollLeft = districtScroller.scrollLeft;
-      districtWasDragged = false;
-    });
-
-    districtScroller.addEventListener('pointermove', (event) => {
-      if (event.pointerType === 'mouse' || !dragStartX) return;
-      const distanceX = event.clientX - dragStartX;
-      const distanceY = event.clientY - dragStartY;
-      if (Math.abs(distanceX) < 8) return;
-      if (Math.abs(distanceX) > Math.abs(distanceY)) {
-        districtWasDragged = true;
-        districtScroller.scrollLeft = dragStartScrollLeft - distanceX;
-      }
-    });
-
-    districtScroller.addEventListener('pointerup', () => {
-      dragStartX = 0;
-    });
-
-    districtScroller.addEventListener('pointercancel', () => {
-      dragStartX = 0;
-    });
-
-    districtScroller.addEventListener('click', (event) => {
-      if (!districtWasDragged) return;
-      event.preventDefault();
-      event.stopPropagation();
-      districtWasDragged = false;
-    }, true);
 
     const updateNavButtons = () => {
       const maxScroll = districtScroller.scrollWidth - districtScroller.clientWidth;
