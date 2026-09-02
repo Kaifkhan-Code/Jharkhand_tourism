@@ -1816,9 +1816,9 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
 
   .navbar { padding: 0.55rem 0; }
   .nav-search {
-    width: min(100%, 260px);
-    flex: 0 1 260px;
-    height: 1.8rem;
+    width: min(100%, 210px);
+    flex: 0 1 210px;
+    height: 1.7rem;
     border-radius: 6px;
   }
   .nav-search input {
@@ -1827,20 +1827,20 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
     font-size: 0.78rem;
   }
   .nav-search button {
-    width: 1.8rem;
-    height: 1.8rem;
-    flex-basis: 1.8rem;
+    width: 1.7rem;
+    height: 1.7rem;
+    flex-basis: 1.7rem;
   }
   .nav-search button::before {
     width: 0.55rem;
     height: 0.55rem;
-    left: 0.52rem;
-    top: 0.46rem;
+    left: 0.48rem;
+    top: 0.43rem;
   }
   .nav-search button::after {
     width: 0.38rem;
-    left: 1rem;
-    top: 1.08rem;
+    left: 0.94rem;
+    top: 1rem;
   }
   .preference-options { grid-template-columns: 1fr; }
   .suggest-layout { grid-template-columns: 1fr; gap: 2rem; }
@@ -1888,7 +1888,15 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   .district-nav { display: none; }
   .district-explorer { margin: 0 -0.25rem; padding-left: 0.25rem; padding-right: 0.25rem; }
   .district-explorer { touch-action: pan-x pan-y; }
-  .district-card { flex-basis: min(340px, calc(100vw - 2.5rem)); width: min(340px, calc(100vw - 2.5rem)); min-height: 300px; }
+  .district-card { flex-basis: min(280px, calc(100vw - 3rem)); width: min(280px, calc(100vw - 3rem)); min-height: 0; }
+  .district-card-header { padding: 0.6rem 0.7rem; }
+  .district-card-image { width: 62px; height: 62px; border-radius: 8px; }
+  .district-card-summary { gap: 0.65rem; }
+  .district-card-copy h3 { font-size: 1.1rem; }
+  .district-card-body { padding: 0.65rem 0.7rem 0.75rem; }
+  .district-card-body p { font-size: 0.78rem; -webkit-line-clamp: 2; }
+  .district-area-tags { max-height: 104px; overflow-y: auto; padding-right: 0.15rem; }
+  .district-area-tag { padding: 0.3rem 0.48rem; font-size: 0.68rem; }
   .special-area-card { min-width: min(280px, calc(100vw - 2.5rem)); }
   .special-area-image,
   .patratu-cover-card .special-area-image,
@@ -1949,7 +1957,7 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
   .hero { min-height: 540px; padding: 3.5rem 0 3rem; }
   .hero h1 { font-size: 2.35rem; }
   .hero-search button { padding: 0 1rem; min-height: 46px; }
-  .district-card { flex-basis: calc(100vw - 2rem); width: calc(100vw - 2rem); }
+  .district-card { flex-basis: min(280px, calc(100vw - 3rem)); width: min(280px, calc(100vw - 3rem)); }
   .district-card-header { align-items: flex-start; flex-direction: column; }
   .district-card-actions { width: 100%; justify-content: flex-end; }
   .district-card-summary { width: 100%; }
