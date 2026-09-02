@@ -1,13 +1,13 @@
 <% layout('layouts/boilerplate') %>
 
-<section class="hero">
+<section class="hero" style="--hero-image: url('<%= imageUrl('jharkhand.jpg') %>');">
   <div class="container hero-content">
     <div class="hero-copy">
       <div class="hero-eyebrow">Chotanagpur Plateau &middot; Eastern India</div>
-      <h1>Go where the green gets quiet.</h1>
+      <h1>Name a place. Find your next escape.</h1>
       <p>Waterfalls, sal forests, hill roads and living traditions. Find a slower side of Jharkhand, with places you can actually visit.</p>
       <form class="hero-search" action="/places" method="GET">
-        <input type="text" name="district" placeholder="Search a district or place">
+        <input type="text" name="search" placeholder="Search a place or district">
         <button type="submit">Explore</button>
       </form>
     </div>
@@ -64,6 +64,413 @@
 <section class="section">
   <div class="container">
     <div class="section-head">
+      <h2>One destination, many places</h2>
+      <span class="section-label">Places to start with</span>
+    </div>
+
+    <%
+      const specialTouristPlaces = [
+        {
+          name: 'Patratu',
+          district: 'Ramgarh',
+              image: '/images/places/patratucover.jpg',
+          description: 'Valleys, waterfalls and dam-side roads create a scenic one-day escape full of quick turns and big views.',
+          url: '/places?area=' + encodeURIComponent('Patratu')
+        },
+        {
+          name: 'Netarhat',
+          district: 'Latehar',
+              image: '/images/places/netarhatcover.jpg',
+          description: 'Cool hill views, sunrise points and quiet forest trails across the plateau make Netarhat a classic retreat.',
+          url: '/places?area=' + encodeURIComponent('Netarhat')
+        },
+        {
+          name: 'Jamshedpur',
+          district: 'East Singhbhum',
+              image: '/images/places/jamshedpurcover.jpg',
+          description: 'Lakes, gardens, dams and green pockets give this city a relaxed day-out feel without leaving the urban core.',
+          url: '/places?area=' + encodeURIComponent('Jamshedpur')
+        },
+        {
+          name: 'Daltonganj',
+          district: 'Daltonganj',
+              image: '/images/places/daltonganjcover.jpg',
+          description: 'River views, forested cliffs and dam-side escapes make Daltonganj a calm plateau stop with big scenery and easy slow-travel days.',
+          url: '/places?district=' + encodeURIComponent('Daltonganj') + '&area=' + encodeURIComponent('Daltonganj')
+        },
+        {
+          name: 'Chaibasa',
+          district: 'West Singhbhum',
+              image: '/images/places/chaibasacover.jpg',
+          description: 'A lively tribal town with lakes, heritage corners and quiet scenic stops that make Chaibasa a great base for short local exploration.',
+          url: '/places?district=' + encodeURIComponent('West Singhbhum') + '&area=' + encodeURIComponent('Chaibasa')
+        },
+        {
+          name: 'Ghatshila',
+          district: 'East Singhbhum',
+              image: '/images/places/ghatshilacover.jpg',
+          description: 'Waterfalls, riverside walks, heritage landmarks and calm dam-side scenery give Ghatshila a beautifully layered, slow-travel feel.',
+          url: '/places?district=' + encodeURIComponent('East Singhbhum') + '&area=' + encodeURIComponent('Ghatshila')
+        },
+        {
+          name: 'Saranda',
+          district: 'West Singhbhum',
+              image: '/images/places/sarandacover.jpg',
+          description: 'Forest trails, hill viewpoints and quiet valley roads give Saranda a rich, slow-travel feel with big natural drama.',
+          url: '/places?district=' + encodeURIComponent('West Singhbhum') + '&area=' + encodeURIComponent('Saranda')
+        },
+        {
+          name: 'Maithon',
+          district: 'Dhanbad',
+              image: '/images/places/maithoncover.jpg',
+          description: 'Reservoir roads, forested viewpoints and waterfall stops make Maithon a scenic slow-travel escape near the Damodar belt.',
+          url: '/places?district=' + encodeURIComponent('Dhanbad') + '&area=' + encodeURIComponent('Maithon')
+        },
+        {
+          name: 'Ulihatu',
+          district: 'East Singhbhum',
+              image: '/images/places/ulihatucover.jpg',
+          description: 'Waterfalls, lake edges, hilltop views and forest pockets give Ulihatu a scenic slow-travel feel with easy nature breaks.',
+          url: '/places?district=' + encodeURIComponent('East Singhbhum') + '&area=' + encodeURIComponent('Ulihatu')
+        },
+        {
+          name: 'Topchanchi',
+          district: 'Dhanbad',
+              image: '/images/places/topchanchicover.jpg',
+          description: 'A calm lakeside destination with a dam, wide viewpoints and easy forested stops that make Topchanchi a relaxed outing near Dhanbad.',
+          url: '/places?district=' + encodeURIComponent('Dhanbad') + '&area=' + encodeURIComponent('Topchanchi')
+        },
+        {
+          name: 'Kiriburu',
+          district: 'West Singhbhum',
+              image: '/images/places/kiriburucover.jpg',
+          description: 'Hilltop sunrise views, forest falls and rugged mining-country scenery give Kiriburu a dramatic, scenic stop for slow-travel explorers.',
+          url: '/places?district=' + encodeURIComponent('West Singhbhum') + '&area=' + encodeURIComponent('Kiriburu')
+        },
+        {
+          name: 'McCluskieganj',
+          district: 'Palamu',
+              image: '/images/places/mccluskieganjcover.png',
+          description: 'A scenic mountain town with waterfalls, rivers, viewpoints and nature trails offering a tranquil escape in the Palamu region.',
+          url: '/places?district=' + encodeURIComponent('Palamu') + '&area=' + encodeURIComponent('McCluskieganj')
+        },
+        {
+          name: 'Betla',
+          district: 'Latehar',
+              image: '/images/places/betlacover.png',
+          description: 'Forest safaris, sunrise viewpoints, waterfalls and quiet river pockets give Betla a layered, slow-travel feel in the heart of the plateau.',
+          url: '/places?district=' + encodeURIComponent('Latehar') + '&area=' + encodeURIComponent('Betla')
+        },
+        {
+          name: 'Rajmahal',
+          district: 'Sahibganj',
+              image: '/images/places/rajmahalcover.jpg',
+          description: 'Historic palaces, quiet lakes, scenic viewpoints and waterfalls create a layered slow-travel experience around Rajmahal.',
+          url: '/places?district=' + encodeURIComponent('Sahibganj') + '&area=' + encodeURIComponent('Rajmahal')
+        },
+        {
+          name: 'Rajrappa',
+          district: 'Ramgarh',
+              image: '/images/places/rajrappacover.jpg',
+          description: 'A scenic destination offering riverside walks, historic bridges, waterfalls and peaceful nature escapes in the Ramgarh plateau.',
+          url: '/places?district=' + encodeURIComponent('Ramgarh') + '&area=' + encodeURIComponent('Rajrappa')
+        }
+      ];
+    %>
+
+    <div class="special-area-rail">
+      <% specialTouristPlaces.forEach(place => { %>
+        <article class="special-area-card hero-feature-card <%= place.name === 'Patratu' ? 'patratu-cover-card' : '' %> <%= place.name === 'Netarhat' ? 'netarhat-cover-card' : '' %> <%= place.name === 'Jamshedpur' ? 'jamshedpur-cover-card' : '' %> <%= place.name === 'Daltonganj' ? 'daltonganj-cover-card' : '' %> <%= place.name === 'Chaibasa' ? 'chaibasa-cover-card' : '' %> <%= place.name === 'Ghatshila' ? 'ghatshila-cover-card' : '' %> <%= place.name === 'Saranda' ? 'saranda-cover-card' : '' %> <%= place.name === 'Maithon' ? 'maithon-cover-card' : '' %> <%= place.name === 'Ulihatu' ? 'ulihatu-cover-card' : '' %> <%= place.name === 'Topchanchi' ? 'topchanchi-cover-card' : '' %> <%= place.name === 'Kiriburu' ? 'kiriburu-cover-card' : '' %> <%= place.name === 'Betla' ? 'betla-cover-card' : '' %> <%= place.name === 'Rajmahal' ? 'rajmahal-cover-card' : '' %> <%= place.name === 'McCluskieganj' ? 'mccluskieganj-cover-card' : '' %> <%= place.name === 'Rajrappa' ? 'rajrappa-cover-card' : '' %>">
+          <a href="<%= place.url %>" class="special-area-hero-link">
+            <img src="<%= imageUrl(place.image) %>" alt="<%= place.name %>" class="special-area-image <%= place.name === 'Patratu' ? 'patratu-cover-image' : '' %> <%= place.name === 'Netarhat' ? 'netarhat-cover-image' : '' %> <%= place.name === 'Jamshedpur' ? 'jamshedpur-cover-image' : '' %> <%= place.name === 'Daltonganj' ? 'daltonganj-cover-image' : '' %> <%= place.name === 'Chaibasa' ? 'chaibasa-cover-image' : '' %> <%= place.name === 'Ghatshila' ? 'ghatshila-cover-image' : '' %> <%= place.name === 'Saranda' ? 'saranda-cover-image' : '' %> <%= place.name === 'Maithon' ? 'maithon-cover-image' : '' %> <%= place.name === 'Ulihatu' ? 'ulihatu-cover-image' : '' %> <%= place.name === 'Topchanchi' ? 'topchanchi-cover-image' : '' %> <%= place.name === 'Kiriburu' ? 'kiriburu-cover-image' : '' %> <%= place.name === 'Betla' ? 'betla-cover-image' : '' %> <%= place.name === 'Rajmahal' ? 'rajmahal-cover-image' : '' %> <%= place.name === 'McCluskieganj' ? 'mccluskieganj-cover-image' : '' %> <%= place.name === 'Rajrappa' ? 'rajrappa-cover-image' : '' %>">
+          </a>
+          <div class="special-area-body">
+            <div class="place-card-district"><%= place.district %> District</div>
+            <h3><a href="<%= place.url %>" class="special-area-title-link"><%= place.name %></a></h3>
+            <p><%= place.description %></p>
+            <% if (place.places && place.places.length) { %>
+              <div class="destination-place-rail" aria-label="Places in <%= place.name %>">
+                <% place.places.forEach(item => { %>
+                  <a href="/places?district=<%= encodeURIComponent(place.district) %>&area=<%= encodeURIComponent(item) %>" class="destination-place-pill"><%= item %></a>
+                <% }) %>
+              </div>
+            <% } %>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section area-section">
+  <div class="container">
+    <div class="explore-stack">
+      <div class="explore-panel">
+        <div class="panel-head">
+          <h2>Browse by district</h2>
+          <p>Choose a district and explore the places around it, from waterfalls and viewpoints to dams, parks and hill escapes.</p>
+        </div>
+
+        <%
+          const districtExplorer = [
+            {
+              district: 'Palamu',
+              division: 'Palamu division',
+              image: '/images/places/palamu.jpg',
+              description: 'A waterfall-rich pocket of the plateau, where forest roads, river viewpoints and hidden cascades make for the best slow-travel days.',
+              areas: ['Palamu', 'Hadhadwa Waterfall', 'Lodh Waterfall', 'Kechki Sangam', 'Sugga Bandh Waterfall', 'Betla']
+            },
+            {
+              district: 'Ranchi',
+              division: 'Ranchi division',
+              image: '/images/places/ranchi.jpg',
+              description: 'The state’s most accessible mix of waterfalls, hill viewpoints, lakes and heritage stops.',
+              areas: ['Ranchi', 'Hundru Falls', 'Dassam Falls', 'Bada Talab', 'Tagore Hill', 'Rock Garden']
+            },
+            {
+              district: 'Latehar',
+              division: 'Palamu division',
+              image: '/images/places/latehar.jpg',
+              description: 'Netarhat and nearby highland stops bring cool weather, sunrise views and dramatic plateaus.',
+              areas: ['Latehar', 'Netarhat', 'Koel View Point', 'Upper Ghaghri Waterfall', 'Sunset Point', 'Betla']
+            },
+            {
+              district: 'Lohardaga',
+              division: 'South Chotanagpur division',
+              image: '/images/places/lohardaga.jpg',
+              description: 'A quiet plateau district with forested hills, waterfall routes and natural viewpoints that suit slow scenic journeys.',
+              areas: ['Lohardaga', 'Dhardhariya Waterfall', 'Local Dam', 'Korbamble Hill', 'Kekrang Waterfall', 'Upper Hisri Hills', 'Black Hills', 'South Koyel River']
+            },
+            {
+              district: 'Ramgarh',
+              division: 'North Chotanagpur',
+              image: '/images/places/patratu.jpg',
+              description: 'Road-trip country with reservoirs, valley roads and offbeat waterfall detours around Patratu.',
+              areas: ['Patratu', 'Patratu Valley', 'Palani Fall', 'Bagda Valley', 'Patratu Dam', 'Rajrappa']
+            },
+            {
+              district: 'Dhanbad',
+              division: 'Dhanbad division',
+              image: '/images/places/dhanbad.jpg',
+              description: 'A practical mix of city escapes, waterfalls and viewpoints for short, easy weekend outings.',
+              areas: ['Dhanbad', 'Bhatinda Waterfall', 'Sahana Pahari', 'Petrified Wood', 'Rajendra Sarovar Park', 'Jharia']
+            },
+            {
+              district: 'Hazaribagh',
+              division: 'Hazaribagh division',
+              image: '/images/places/hazaribagh.jpg',
+              description: 'A forested hill district with wildlife, lakes, valleys and waterfall routes that make for relaxed nature escapes and easy weekend visits.',
+              areas: ['Hazaribagh', 'Hazaribagh Wildlife Sanctuary', 'Canary Hill', 'Salparni Waterfall', 'Hazaribagh Jheel', 'Chota Jheel', 'Galwaan Valley']
+            },
+            {
+              district: 'Sahibganj',
+              division: 'Santhal Pargana division',
+              image: '/images/places/sahibganj.jpg',
+              description: 'A heritage-rich district with riverside parks, dams, hill views and palace landmarks that blend culture with scenic outings.',
+              areas: ['Sahibganj', 'King Palace', 'Bandi Dam', 'Dalma Hill Top', 'Ganjia Barrage', 'River View Park', 'Hesakocha Waterfall', 'Saraikela Rajmahal', 'Chandil Dam', 'Saraikela Palace']
+            },
+            {
+              district: 'Saraikela',
+              division: 'Kolhan division',
+              image: '/images/places/saraikela.jpg',
+              description: 'A heritage-rich district with palace landmarks, historical sites, hilltop views and calm riverside stops for a slow cultural getaway.',
+              areas: ['Saraikela', 'King Palace', 'Bandi Dam', 'Dalma Hill Top', 'Ganjia Barrage', 'River View Park', 'Hesakocha Waterfall', 'Saraikela Rajmahal', 'Chandil Dam', 'Saraikela Palace']
+            },
+            {
+              district: 'Simdega',
+              division: 'North Chotanagpur division',
+              image: '/images/places/simdega.jpg',
+              description: 'A green hill district with dams, waterfalls and quiet picnic routes that bring a calm plateau-side escape to travellers.',
+              areas: ['Simdega', 'Kelaghat Dam', 'Kobang Dam', 'Rajadera Picnic Spot', 'Eraap Dam', 'Heaven Hills Simdega', 'Kairbera Dam', 'Dangadi Waterfall', 'Simdega Basantpur', 'Gurunda Ghagh Kolebira Simdega', 'Rani Waterfall', 'Kelaghat Dam Center']
+            },
+            {
+              district: 'Khunti',
+              division: 'South Chotanagpur division',
+              image: '/images/places/khunti.jpg',
+              description: 'A quieter tribal belt with mellow natural stops, waterfall detours and easy local escapes away from the main tourist circuit.',
+              areas: ['Khunti', 'Panchghagh Falls', 'Bhagwan Birsa Mrigvihar', 'Sanitation Park', 'Khunti Park', 'SDA School Dam', 'Birhu Dam', 'Rani Fall']
+            },
+            {
+              district: 'West Singhbhum',
+              division: 'Kolhan division',
+              image: '/images/places/WestSinghbhum.jpg',
+              description: 'A forested hill district with high viewpoints, scenic waterfalls and calm dams that offer rewarding nature escapes in the far south.',
+              areas: ['Kachahari Talab', 'Lupungutu Jharna', 'Chaibasa Clock Tower', 'Jubilee Lake Park']
+            },
+            {
+              district: 'Pakur',
+              division: 'Santhal Pargana division',
+              image: '/images/places/pakur.jpg',
+              description: 'Pakur brings a mix of rolling hills, cave-grotto charm, sunset viewpoints and local waterfall escapes for quieter day trips.',
+              areas: ['Pakur', 'Lilatari Waterfall', 'Kanchangar Ghufa', 'Mountain Hills Ramnathpur', 'Nagarnabi Sunset Point']
+            },
+            {
+              district: 'East Singhbhum',
+              division: 'Jamshedpur division',
+              image: '/images/places/jamshedpur.jpg',
+              description: 'The steel city opens into lakes, gardens, picnic points and low-key nature escapes around town.',
+              areas: ['Jamshedpur', 'Dimna Lake', 'Jubilee Park', 'Chota Banki Dam', 'Sitarampur Dam', 'Dalma', 'Dalma Wildlife Sanctuary', 'Domuhani River Point', 'Khankripa Hill View', 'Dobo Dam', 'Ulihatu', 'Birhu Dam', 'Sanatorium Lake', 'Hirni Waterfalls', 'Rani Fall', 'Urlutoli Dam', 'Ullung Picnic Spot', 'Khaladi Hilltop View', 'Pandupuding', 'Remta Lake', 'Hora P Jungle', 'Anidih Picnic Spot', 'Baheya Waterfall', 'Sita Fall', 'Chiraundi Hill', 'Hesakocha Waterfall', 'Kulguru Hill', 'Panchghagh Falls', 'Big Blue Pond', 'Perwaghagh Waterfall', 'Chandil Dam', 'Bandi Dam', 'Triu Fall', 'Dalma Hill Top', 'Lota Hill View', 'Chunri Waterfall', 'Manjhi Lake']
+            },
+            {
+              district: 'Giridih',
+              division: 'Giridih division',
+              image: '/images/places/giridih.jpg',
+              description: 'A layered landscape of hills, temples, forest routes and scenic water bodies for quieter travels.',
+              areas: ['Giridih', 'Parasnath Hill', 'Debiya Dobni', 'Bankhanjo', 'Khandoli Dam', 'Usri Dam']
+            },
+            {
+              district: 'Gumla',
+              division: 'South Chotanagpur',
+              image: '/images/places/gumla.jpg',
+              description: 'Forest trails, water escapes and rural stops make this one of the most grounding districts in the state.',
+              areas: ['Gumla', 'Luna Waterfall', 'Unchdih Waterfall', 'Saru Lake', 'Bamhni Dam', 'Sarda']
+            },
+            {
+              district: 'Koderma',
+              division: 'Koderma division',
+              image: '/images/places/koderma.jpg',
+              description: 'A scenic plateau district with waterfalls, dams, wildlife sanctuaries, and quiet natural stops perfect for peaceful nature escapes.',
+              areas: ['Koderma', 'Bangaikalam Waterfall', 'Koderma Wildlife Sanctuary', 'DVC Dam', 'Tilaiya Dam', 'Jhumri Tilaiya Dam', 'Rajatalab', 'Shitalkund', 'Brindaha Waterfall', 'Maharshi Kardam Park']
+            },
+            {
+              district: 'Jamtara',
+              division: 'Santhal Pargana division',
+              image: '/images/places/jamtara.jpg',
+              description: 'A scenic riverside district with hills, picnic spots, and viewpoints offering quiet natural escapes and family-friendly outings.',
+              areas: ['Jamtara', 'Barakar River', 'Barakar River Point', 'Parvat Vihar', 'Ladhna Hilltop Viewpoint', 'Kashidanga Picnic Spot', 'Kelahi Picnic Point', 'Kelahi Hill', 'Sahardal Overbridge Viewpoint', 'Ladhna Picnic Spot']
+            },
+            {
+              district: 'Bokaro',
+              division: 'North Chotanagpur division',
+              image: '/images/places/bokaro.png',
+              description: 'Bokaro offers a balanced mix of industrial calm, water bodies, scenic viewpoints and easy nature-led outings for short family trips.',
+              areas: ['Bokaro', 'Satanpur Hill', 'Garga Dam Plantation', 'Khanjo Waterfall', 'Barwa Ghat', 'Sita Fall']
+            },
+            {
+              district: 'Chatra',
+              division: 'North Chotanagpur division',
+              image: '/images/places/chatra.jpg',
+              description: 'Chatra brings together forested landscapes, hill routes, waterfalls and quiet plateaus ideal for peaceful nature escapes and scenic drives.',
+              areas: ['Chatra', 'Tamasin Waterfall', 'Goa Waterfall', 'Sumer Dumer Waterfall', 'SON Waterfall', 'Maludah Waterfall']
+            },
+            {
+              district: 'Garhwa',
+              division: 'Palamu division',
+              image: '/images/places/garhwa.jpg',
+              description: 'Garhwa combines scenic hill roads, waterfalls, dam-side viewpoints, and quiet natural stops for an easy nature getaway in the south-western plateau.',
+              areas: ['Garhwa', 'Italy', 'Sukhaldari Waterfall', 'Gurusindhu Waterfall', 'Aanraj Dam', 'Banda Pahar']
+            },
+            {
+              district: 'Deoghar',
+              division: 'Santhal Pargana division',
+              image: '/images/places/deoghar.jpg',
+              description: 'Deoghar brings together temple heritage, forested viewpoints, lakes, waterfalls and quiet hill spots for spiritual and scenic family trips.',
+              areas: ['Deoghar', 'Mr Waterfall', 'Punasimini Waterfall', 'Bit Pahar', 'Nandan Pahar', 'Shark Lake', 'Purandaha Talab', 'Gautam Pahar', 'Punsai Dam', 'Tapovan Hill', 'Naulakha Temple', 'Jalsar']
+            },
+            {
+              district: 'Dumka',
+              division: 'Santhal Pargana division',
+              image: '/images/places/dumka.jpg',
+              description: 'Dumka blends heritage landmarks, small hill viewpoints, dams and park spaces into a relaxed mix of quiet outings and scenic day trips.',
+              areas: ['Dumka', 'King Digvijaysingh Fort', 'Maharocheck Dam', 'Sristi Park Kurwa', 'Banki Bera Dam', 'Dumka Park', 'Kaira Bani Dam', 'Nakti Hill', 'Khunta Bandh', 'Shiv Pahar']
+            },
+            {
+              district: 'Godda',
+              division: 'Santhal Pargana division',
+              image: '/images/places/godda.jpg',
+              description: 'A scenic district with waterfalls, dams, hills, and nature parks offering diverse natural experiences and peaceful family outings.',
+              areas: ['Godda', 'Damaklol Waterfall', 'Kusumghati Dam', 'Sundar Dam Lahathi', 'Sugwa Pahad', 'Biodiversity Park']
+            }
+          ];
+        %>
+
+        <div class="district-carousel">
+          <button type="button" class="district-nav district-nav-prev" aria-label="Scroll districts left">←</button>
+          <div class="district-explorer" aria-label="Browse districts horizontally">
+            <% districtExplorer.forEach((group) => { %>
+              <article class="district-card" data-district-url="/places?district=<%= encodeURIComponent(group.district) %>">
+                <a href="/places?district=<%= encodeURIComponent(group.district) %>" class="district-card-header district-card-link-block">
+                  <div class="district-card-summary">
+                    <img src="<%= imageUrl(group.image) %>" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=300&q=80';" alt="<%= group.district %>" class="district-card-image">
+                    <div class="district-card-copy">
+                      <span class="district-card-division"><%= group.division %></span>
+                      <h3><%= group.district %></h3>
+                    </div>
+                  </div>
+                  <div class="district-card-actions">
+                    <span class="district-card-link">View all</span>
+                  </div>
+                </a>
+                <div class="district-card-body">
+                  <p><%= group.description %></p>
+                  <div class="district-area-tags">
+                    <% group.areas.forEach(area => { %>
+                      <a href="/places?district=<%= encodeURIComponent(group.district) %>&area=<%= encodeURIComponent(area) %>" class="district-area-tag"><%= area %></a>
+                    <% }) %>
+                  </div>
+                </div>
+              </article>
+            <% }) %>
+          </div>
+          <button type="button" class="district-nav district-nav-next" aria-label="Scroll districts right">→</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  const districtScroller = document.querySelector('.district-explorer');
+  const districtPrev = document.querySelector('.district-nav-prev');
+  const districtNext = document.querySelector('.district-nav-next');
+
+  if (districtScroller) {
+    const scrollByCard = () => {
+      const firstCard = districtScroller.querySelector('.district-card');
+      if (!firstCard) return 250;
+      return firstCard.getBoundingClientRect().width + 14;
+    };
+
+    districtPrev?.addEventListener('click', () => {
+      districtScroller.scrollBy({ left: -scrollByCard(), behavior: 'smooth' });
+    });
+
+    districtNext?.addEventListener('click', () => {
+      districtScroller.scrollBy({ left: scrollByCard(), behavior: 'smooth' });
+    });
+
+    districtScroller.addEventListener('wheel', (event) => {
+      const scrollerWidth = districtScroller.scrollWidth - districtScroller.clientWidth;
+      if (scrollerWidth <= 0) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      districtScroller.scrollLeft += event.deltaY;
+    }, { passive: false });
+
+    const updateNavButtons = () => {
+      const maxScroll = districtScroller.scrollWidth - districtScroller.clientWidth;
+      if (districtPrev) districtPrev.disabled = districtScroller.scrollLeft <= 8;
+      if (districtNext) districtNext.disabled = districtScroller.scrollLeft >= maxScroll - 8;
+    };
+
+    districtScroller.addEventListener('scroll', updateNavButtons);
+    window.addEventListener('resize', updateNavButtons);
+    updateNavButtons();
+  }
+
+  document.querySelectorAll('.district-card').forEach((card) => {
+    card.addEventListener('click', (event) => {
+      if (event.target.closest('.district-area-tag')) return;
+      const url = card.dataset.districtUrl;
+      if (url) window.location.href = url;
+    });
+  });
+</script>
+
+<section class="section">
+    <div class="section-head">
       <h2>Start exploring</h2>
       <span class="section-label">01 &mdash; Choose your ground</span>
     </div>
@@ -71,7 +478,6 @@
       <a href="/places?category=waterfall" class="pill">Waterfalls</a>
       <a href="/places?category=hill-station" class="pill">Hill Stations</a>
       <a href="/places?category=wildlife" class="pill">Wildlife</a>
-      <a href="/places?category=temple" class="pill">Temples</a>
       <a href="/places?category=tribal-heritage" class="pill">Tribal Heritage</a>
       <a href="/places?category=dam-lake" class="pill">Dams &amp; Lakes</a>
     </div>

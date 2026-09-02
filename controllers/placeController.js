@@ -1,11 +1,14 @@
 const Place = require("../models/place");
 const VisitedPlace = require("../models/visitedPlace");
+
 const ItineraryPlace = require("../models/itineraryPlace");
 const PlaceSubmission = require("../models/placeSubmission");
 const Review = require("../models/review");
 const { uploadReviewPhotoToCloudinary } = require("../utils/reviewUpload");
+const seedPlaces = require("../seed/seedPlaces");
 
-const categories = ["waterfall", "hill-station", "wildlife", "temple", "tribal-heritage", "dam-lake"];
+const categories = ["waterfall", "hill-station", "wildlife", "temple", "tribal-heritage", "dam-lake", "nature", "park"];
+const goddaFallbackPlaces = seedPlaces.filter((place) => place.district && place.district.toLowerCase() === "godda");
 
 module.exports.renderSuggestionForm = async (req, res) => {
   const submissions = await PlaceSubmission.find({ submittedBy: req.user._id }).sort({ createdAt: -1 });
@@ -32,13 +35,65 @@ module.exports.submitSuggestion = async (req, res) => {
 
 // GET /places — Explore: all places, with optional filters
 module.exports.index = async (req, res) => {
-  const { category, season, district } = req.query;
+  const { category, season, district, search, area } = req.query;
   const filter = {};
   if (category) filter.category = category;
   if (season) filter.bestSeason = season;
   if (district) filter.district = new RegExp(district, "i");
+  if (area || search) {
+    const searchPattern = new RegExp(area || search, "i");
+    // Area and search filters should match the place itself, not unrelated entries in the same district.
+    // Include the description and tags so a destination like "Ghatshila" only surfaces the Ghatshila items.
+    if (district) {
+      filter.$or = [
+        { name: searchPattern },
+        { description: searchPattern },
+        { howToReach: searchPattern },
+        { tags: searchPattern },
+      ];
+    } else {
+      filter.$or = [
+        { name: searchPattern },
+        { district: searchPattern },
+        { description: searchPattern },
+        { howToReach: searchPattern },
+        { tags: searchPattern },
+      ];
+    }
+  }
 
-  const places = await Place.find(filter).sort({ name: 1 });
+  let places = await Place.find(filter).sort({ name: 1 });
+
+  const fallbackQuery = district || area || search;
+  if (places.length === 0 && fallbackQuery) {
+    const matchingFallback = seedPlaces.filter((place) => {
+      if (category && place.category !== category) return false;
+      
+      // If district is specified, it must match first
+      if (district && !new RegExp(district, "i").test(place.district)) return false;
+      
+      // If area is specified, match it in name, description, or howToReach
+      if (area) {
+        const areaPattern = new RegExp(area, "i");
+        return areaPattern.test(place.name) || areaPattern.test(place.description || "") || areaPattern.test(place.howToReach || "");
+      }
+      
+      // If search is specified, match it in name, district, or description
+      if (search) {
+        const searchPattern = new RegExp(search, "i");
+        return searchPattern.test(place.name) || searchPattern.test(place.district) || searchPattern.test(place.description || "");
+      }
+      
+      // If only district is specified, we already filtered it above
+      if (district) return true;
+      
+      return false;
+    });
+
+    if (matchingFallback.length) {
+      places = matchingFallback;
+    }
+  }
 
   let visitedIds = [];
   if (req.user) {

@@ -10,7 +10,7 @@ const MongoStore = require("connect-mongo");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const methodOverride = require("method-override");
-
+const discoverExternalRoutes = require("./routes/discoverExternal");
 const connectDB = require("./config/db");
 const User = require("./models/user");
 
@@ -88,6 +88,7 @@ app.use("/itinerary", itineraryRoutes);
 app.use("/assistant", assistantRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/", authRoutes);
+app.use("/discover-places", discoverExternalRoutes);
 
 app.use((req, res) => {
   res.status(404).render("404");

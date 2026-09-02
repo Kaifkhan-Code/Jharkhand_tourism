@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     type: [
       {
         type: String,
-        enum: ["waterfall", "hill-station", "wildlife", "temple", "tribal-heritage", "dam-lake"],
+        enum: ["waterfall", "hill-station", "wildlife", "temple", "tribal-heritage", "dam-lake", "nature", "park"],
       },
     ],
     default: [],

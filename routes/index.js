@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Place = require("../models/place");
 const VisitedPlace = require("../models/visitedPlace");
+const { cloudinaryImageUrl } = require("../utils/cloudinary");
 
 router.get("/", async (req, res) => {
   const popularPlaces = await VisitedPlace.aggregate([
@@ -21,7 +22,11 @@ router.get("/", async (req, res) => {
     ? []
     : await Place.find({}).sort({ name: 1 }).limit(3);
 
-  res.render("home", { trendingPlaces, fallbackPlaces });
+  res.render("home", {
+    trendingPlaces,
+    fallbackPlaces,
+    imageUrl: cloudinaryImageUrl,
+  });
 });
 
 module.exports = router;

@@ -12,7 +12,7 @@ module.exports.signup = async (req, res, next) => {
     const registeredUser = await User.register(user, password);
     req.login(registeredUser, (err) => {
       if (err) return next(err);
-      req.session.preferenceRedirectTo = "/dashboard";
+      req.session.preferenceRedirectTo = "/";
       res.redirect("/preferences");
     });
   } catch (err) {
@@ -25,13 +25,17 @@ module.exports.renderLogin = (req, res) => {
 };
 
 module.exports.login = (req, res) => {
-  const redirectTo = req.session.redirectTo || (req.user.role === "admin" ? "/dashboard/admin" : "/dashboard");
+  const redirectTo = req.session.redirectTo || "/";
   delete req.session.redirectTo;
+
+  const safeRedirectTo = redirectTo === "/dashboard" || redirectTo === "/dashboard/admin" ? "/" : redirectTo;
+
   if (req.user.role === "customer" && !(req.user.likedCategories || []).length) {
-    req.session.preferenceRedirectTo = redirectTo;
+    req.session.preferenceRedirectTo = safeRedirectTo;
     return res.redirect("/preferences");
   }
-  res.redirect(redirectTo);
+
+  res.redirect(safeRedirectTo);
 };
 
 module.exports.renderPreferences = (req, res) => {
@@ -49,6 +53,8 @@ module.exports.savePreferences = async (req, res) => {
     "temple",
     "tribal-heritage",
     "dam-lake",
+    "nature",
+    "park",
   ];
   const submittedCategories = Array.isArray(req.body.likedCategories)
     ? req.body.likedCategories
@@ -66,7 +72,9 @@ module.exports.savePreferences = async (req, res) => {
 
   req.user.likedCategories = [...new Set(likedCategories)];
   await req.user.save();
-  const redirectTo = req.session.preferenceRedirectTo || "/dashboard";
+
+  const rawRedirectTo = req.session.preferenceRedirectTo || "/";
+  const redirectTo = rawRedirectTo === "/dashboard" || rawRedirectTo === "/dashboard/admin" ? "/" : rawRedirectTo;
   delete req.session.preferenceRedirectTo;
   res.redirect(redirectTo);
 };

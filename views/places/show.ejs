@@ -8,23 +8,29 @@
     </div>
   </section>
 <% } else { %>
-  <img class="place-hero-img" src="<%= place.image && place.image.url ? place.image.url : 'https://placehold.co/1200x340/1e3b2c/f7f2e8?text=' + encodeURIComponent(place.name) %>" alt="<%= place.name %>">
+  <section class="place-detail-hero">
+    <div class="container place-detail-hero-grid">
+      <img class="place-hero-img" src="<%= place.image && place.image.url ? place.image.url : 'https://placehold.co/900x900/1e3b2c/f7f2e8?text=' + encodeURIComponent(place.name) %>" alt="<%= place.name %>">
+      <div class="place-detail-intro">
+        <div class="section-label detail-meta"><%= place.district %> District &middot; <%= place.category.replace('-', ' ') %></div>
+        <h1 class="detail-title"><%= place.name %></h1>
+        <p class="lead-copy detail-description"><%= place.description %></p>
+        <div class="tag-row detail-tags">
+          <% (place.tags || []).forEach(tag => { %>
+            <span class="tag"><%= tag %></span>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section class="section">
     <div class="container">
-      <div class="section-label detail-meta"><%= place.district %> District &middot; <%= place.category.replace('-', ' ') %></div>
-      <h1 class="detail-title"><%= place.name %></h1>
-
       <div class="place-detail-grid">
-        <div>
-          <p class="lead-copy detail-description"><%= place.description %></p>
-
-          <div class="tag-row detail-tags">
-            <% (place.tags || []).forEach(tag => { %>
-              <span class="tag"><%= tag %></span>
-            <% }) %>
-          </div>
-
+        <div class="detail-actions-panel">
+          <div class="section-label">Plan this stop</div>
+          <h2>Make room for <%= place.name %></h2>
+          <p class="detail-actions-copy">Keep this place close while you shape a slower, more memorable Jharkhand itinerary.</p>
           <% if (currentUser) { %>
             <% if (isInItinerary) { %>
               <p class="saved-note">Saved in <a href="/itinerary">your itinerary</a>.</p>
@@ -47,7 +53,7 @@
           <% } %>
         </div>
 
-        <aside>
+        <aside class="detail-facts-panel">
           <div class="fact-box">
             <div class="fact-row"><span>Best season</span><span><%= place.bestSeason %></span></div>
             <div class="fact-row"><span>District</span><span><%= place.district %></span></div>
@@ -59,8 +65,34 @@
               </div>
             <% } %>
           </div>
+          <% if (place.googleMapsUrl) { %>
+            <a class="map-link" href="<%= place.googleMapsUrl %>" target="_blank" rel="noopener noreferrer">Open in Google Maps</a>
+          <% } else if (place.location && place.location.lat && place.location.lng) { %>
+            <a class="map-link" href="https://www.openstreetmap.org/?mlat=<%= place.location.lat %>&mlon=<%= place.location.lng %>#map=14/<%= place.location.lat %>/<%= place.location.lng %>" target="_blank" rel="noopener noreferrer">Open map</a>
+          <% } %>
         </aside>
       </div>
+
+      <% if (place.location && place.location.lat && place.location.lng) { %>
+        <section class="map-section">
+          <div class="map-heading">
+            <div>
+              <div class="section-label">Live directions</div>
+              <h2>From you to <%= place.name %></h2>
+            </div>
+            <button type="button" id="locate-me" class="btn btn-primary">Show my location</button>
+          </div>
+          <div class="map-frame">
+            <div id="place-map" class="place-map" data-lat="<%= place.location.lat %>" data-lng="<%= place.location.lng %>" data-name="<%= place.name %>"></div>
+            <div class="map-legend" aria-live="polite">
+              <span><i class="legend-dot destination-dot"></i><%= place.name %></span>
+              <span><i class="legend-dot user-dot"></i>You</span>
+            </div>
+          </div>
+          <p id="location-status" class="map-status">Click “Show my location” to see the route from where you are.</p>
+          <a class="map-link" href="https://www.openstreetmap.org/?mlat=<%= place.location.lat %>&mlon=<%= place.location.lng %>#map=14/<%= place.location.lat %>/<%= place.location.lng %>" target="_blank" rel="noopener noreferrer">Open larger map</a>
+        </section>
+      <% } %>
 
       <section class="reviews-section">
         <div class="section-head">
@@ -98,7 +130,12 @@
               <article class="review-item">
                 <div class="review-item-top"><strong><%= review.user ? review.user.username : 'Traveller' %></strong><span class="stars" aria-label="<%= review.rating %> out of 5 stars"><%= '★'.repeat(review.rating) %><%= '☆'.repeat(5 - review.rating) %></span></div>
                 <p><%= review.comment %></p>
-                <% if (review.photo && review.photo.url) { %><img class="review-photo" src="<%= review.photo.url %>" alt="Photo shared by <%= review.user ? review.user.username : 'traveller' %> at <%= place.name %>"><% } %>
+                <% if (review.photo && review.photo.url) { %>
+                  <figure class="review-photo-figure">
+                    <img class="review-photo" src="<%= review.photo.url %>" alt="Photo shared by <%= review.user ? review.user.username : 'traveller' %> at <%= place.name %>" loading="lazy">
+                    <figcaption>Photo shared by <%= review.user ? review.user.username : 'a traveller' %></figcaption>
+                  </figure>
+                <% } %>
               </article>
             <% }) %>
           </div>
@@ -107,26 +144,6 @@
         <% } %>
       </section>
 
-      <% if (place.location && place.location.lat && place.location.lng) { %>
-        <section class="map-section">
-          <div class="map-heading">
-            <div>
-              <div class="section-label">Live directions</div>
-              <h2>From you to <%= place.name %></h2>
-            </div>
-            <button type="button" id="locate-me" class="btn btn-primary">Show my location</button>
-          </div>
-          <div class="map-frame">
-            <div id="place-map" class="place-map" data-lat="<%= place.location.lat %>" data-lng="<%= place.location.lng %>" data-name="<%= place.name %>"></div>
-            <div class="map-legend" aria-live="polite">
-              <span><i class="legend-dot destination-dot"></i><%= place.name %></span>
-              <span><i class="legend-dot user-dot"></i>You</span>
-            </div>
-          </div>
-          <p id="location-status" class="map-status">Click “Show my location” to see the route from where you are.</p>
-          <a class="map-link" href="https://www.openstreetmap.org/?mlat=<%= place.location.lat %>&mlon=<%= place.location.lng %>#map=14/<%= place.location.lat %>/<%= place.location.lng %>" target="_blank" rel="noopener noreferrer">Open larger map</a>
-        </section>
-      <% } %>
     </div>
   </section>
 <% } %>

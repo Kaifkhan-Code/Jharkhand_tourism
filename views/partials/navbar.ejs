@@ -1,6 +1,12 @@
 <nav class="navbar">
   <div class="container">
     <a href="/" class="brand">Jharkhand<span>.</span>Trails</a>
+
+    <form action="/places" method="GET" class="nav-search" role="search">
+      <input type="text" name="search" placeholder="Search places or districts" aria-label="Search places or districts">
+      <button type="submit">Search</button>
+    </form>
+
     <div class="nav-links">
       <a href="/places">Explore</a>
       <a href="/assistant">Ask a Guide</a>

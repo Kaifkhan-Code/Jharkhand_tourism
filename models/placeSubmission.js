@@ -11,7 +11,7 @@ const placeSubmissionSchema = new mongoose.Schema(
     district: { type: String, required: true, trim: true },
     category: {
       type: String,
-      enum: ["waterfall", "hill-station", "wildlife", "temple", "tribal-heritage", "dam-lake"],
+      enum: ["waterfall", "hill-station", "wildlife", "temple", "tribal-heritage", "dam-lake", "nature", "park"],
       required: true,
     },
     description: { type: String, required: true, trim: true },

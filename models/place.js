@@ -13,7 +13,7 @@ const placeSchema = new mongoose.Schema({
   category: {
     // Keep this a small, controlled set so filtering/tagging stays predictable
     type: String,
-    enum: ["waterfall", "hill-station", "wildlife", "temple", "tribal-heritage", "dam-lake"],
+    enum: ["waterfall", "hill-station", "wildlife", "temple", "tribal-heritage", "heritage", "dam-lake", "nature", "park", "river"],
     required: true,
   },
   tags: [String], // e.g. ["nature", "trekking", "family-friendly", "offbeat"]
@@ -35,6 +35,7 @@ const placeSchema = new mongoose.Schema({
     lat: Number,
     lng: Number,
   },
+  googleMapsUrl: String,
 });
 
 module.exports = mongoose.model("Place", placeSchema);

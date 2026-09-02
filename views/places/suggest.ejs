@@ -29,7 +29,7 @@
       <div class="form-group"><label for="category">Category</label>
         <select id="category" name="category" required>
           <option value="">Choose a category</option>
-          <% [['waterfall','Waterfall'],['hill-station','Hill station'],['wildlife','Wildlife'],['temple','Temple'],['tribal-heritage','Tribal heritage'],['dam-lake','Dam or lake']].forEach(([value, label]) => { %>
+          <% [['waterfall','Waterfall'],['hill-station','Hill station'],['wildlife','Wildlife'],['temple','Temple'],['tribal-heritage','Tribal heritage'],['dam-lake','Dam or lake'],['nature','Nature'],['park','Park']].forEach(([value, label]) => { %>
             <option value="<%= value %>" <%= formData.category === value ? 'selected' : '' %>><%= label %></option>
           <% }) %>
         </select>

@@ -1,0 +1,76 @@
+<% layout('../layouts/boilerplate') %>
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <h2>Discover More Places</h2>
+      <span class="section-label">Pulled live from Geoapify</span>
+    </div>
+
+    <p style="color: var(--ink-soft); max-width: 65ch; margin-bottom: 1.5rem;">
+      This searches real points of interest around a district — places Geoapify knows about
+      that aren't already in your database.
+    </p>
+
+    <form method="GET" style="display:flex; gap:0.6rem; margin-bottom: 2rem; flex-wrap: wrap;">
+      <select name="district" style="padding:0.65rem 0.9rem; border:1.5px solid var(--line); font-family: var(--font-body);">
+        <% districts.forEach(d => { %>
+          <option value="<%= d %>" <%= d === district ? 'selected' : '' %>><%= d %></option>
+        <% }) %>
+      </select>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <% if (imported) { %>
+      <div class="fact-box" style="border-left-color: var(--sal-green); margin-bottom: 1.5rem;">
+        Imported "<%= imported %>" — <a href="/places" style="text-decoration:underline;">view it on Explore</a>.
+      </div>
+    <% } %>
+
+    <% if (error) { %>
+      <div class="form-error"><%= error %></div>
+    <% } else if (results.length === 0) { %>
+      <div class="empty-state">
+        <h3>Nothing new found</h3>
+        <p>Either everything nearby is already in your database, or try a different district.</p>
+      </div>
+    <% } else { %>
+      <div class="place-grid">
+        <% results.forEach(place => { %>
+          <div class="place-card" style="cursor: default;">
+            <div class="place-card-body">
+              <div class="place-card-district"><%= place.kinds.split(',')[0].replace(/_/g, ' ') %></div>
+              <h3><%= place.name %></h3>
+              <p style="font-size:0.82rem; color: var(--ink-soft);">
+                <%= place.lat.toFixed(4) %>, <%= place.lng.toFixed(4) %>
+              </p>
+
+              <form action="/discover-places/import" method="POST" style="margin-top:0.9rem;">
+                <input type="hidden" name="xid" value="<%= place.xid %>">
+                <input type="hidden" name="district" value="<%= district %>">
+
+                <select name="category" style="width:100%; margin-bottom:0.5rem; padding:0.5rem; font-size:0.85rem; border:1px solid var(--line);">
+                  <option value="waterfall">Waterfall</option>
+                  <option value="hill-station">Hill Station</option>
+                  <option value="wildlife">Wildlife</option>
+                  <option value="temple">Temple</option>
+                  <option value="tribal-heritage">Tribal Heritage</option>
+                  <option value="dam-lake">Dam / Lake</option>
+                </select>
+
+                <select name="tourismType" style="width:100%; margin-bottom:0.7rem; padding:0.5rem; font-size:0.85rem; border:1px solid var(--line);">
+                  <option value="eco">Eco</option>
+                  <option value="spiritual">Spiritual</option>
+                  <option value="adventure">Adventure</option>
+                  <option value="heritage">Heritage</option>
+                  <option value="rural">Rural</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary" style="width:100%;">Import to my site</button>
+              </form>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</section>
