@@ -1934,7 +1934,10 @@ footer .brand { color: var(--mahua-light); font-size: 1.1rem; }
     padding: 0.15rem 0 0.65rem;
     overflow-x: auto;
     overflow-y: hidden;
-    touch-action: pan-x pan-y;
+  }
+  .district-explorer {
+    touch-action: pan-y;
+    cursor: grab;
   }
   .district-card,
   .special-area-card {
