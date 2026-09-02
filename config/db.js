@@ -7,10 +7,12 @@ async function connectDB({ retries = 5, delay = 2000 } = {}) {
     candidateUris.push({ label: "Atlas", uri: process.env.MONGO_URI });
   }
 
-  candidateUris.push({
-    label: "Local",
-    uri: process.env.LOCAL_MONGO_URI || "mongodb://127.0.0.1:27017/jharkhand-tourism",
-  });
+  if (process.env.NODE_ENV !== "production") {
+    candidateUris.push({
+      label: "Local",
+      uri: process.env.LOCAL_MONGO_URI || "mongodb://127.0.0.1:27017/jharkhand-tourism",
+    });
+  }
 
   if (candidateUris.length === 0) {
     throw new Error("No MongoDB connection URI is configured");
@@ -18,6 +20,8 @@ async function connectDB({ retries = 5, delay = 2000 } = {}) {
 
   const opts = {
     serverSelectionTimeoutMS: 5000,
+    family: 4,
+    tls: true,
   };
 
   let lastError;
