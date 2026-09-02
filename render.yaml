@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: jharkhand-tourism
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: CLOUDINARY_URL
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GEOAPIFY_API_KEY
+        sync: false
